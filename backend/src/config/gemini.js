@@ -9,8 +9,9 @@ function createGeminiModel() {
 
   return new ChatGoogleGenerativeAI({
     apiKey: env.geminiApiKey,
-    model: "gemini-2.5-flash",
-    temperature: 0.2
+    model: "gemini-flash-latest",
+    temperature: 0.2,
+    maxRetries: 1
   });
 }
 
