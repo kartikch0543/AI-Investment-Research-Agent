@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-
-import ProtectedTopBar from "../components/layout/ProtectedTopBar";
 import GlassPanel from "../components/ui/GlassPanel";
 import SectionHeading from "../components/ui/SectionHeading";
 import { useAuth } from "../context/AuthContext";
@@ -25,7 +23,6 @@ function ProfilePage() {
 
   async function handleProfileSave(event) {
     event.preventDefault();
-
     try {
       setError("");
       setMessage("");
@@ -53,118 +50,113 @@ function ProfilePage() {
   }
 
   return (
-    <>
-      <ProtectedTopBar />
-      <main className="min-h-[calc(100vh-96px)] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-5xl flex-col gap-6">
-          <GlassPanel>
-            <SectionHeading
-              eyebrow="Profile"
-              title={user?.displayName || "AlphaLens User"}
-              description="Your connected Google account is used to access the AlphaLens research workspace."
+    <div className="flex flex-col gap-6 max-w-5xl">
+      <GlassPanel>
+        <SectionHeading
+          eyebrow="Profile"
+          title={user?.displayName || "AlphaLens User"}
+          description="Your connected Google account is used to access the AlphaLens research workspace."
+        />
+      </GlassPanel>
+
+      <section className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+        <GlassPanel>
+          <div className="flex items-center gap-4">
+            {(databaseProfile?.photoUrl || user?.photoURL) ? (
+              <img
+                src={databaseProfile?.photoUrl || user?.photoURL}
+                alt={databaseProfile?.displayName || user?.displayName || "User"}
+                className="h-20 w-20 rounded-2xl object-cover border border-[var(--border-color)]"
+              />
+            ) : (
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--color-accent-light)] text-xl font-bold text-[var(--color-accent)] border border-[var(--border-color)]">
+                {(databaseProfile?.displayName || user?.displayName || "A").slice(0, 1).toUpperCase()}
+              </div>
+            )}
+            <div>
+              <p className="text-xl font-semibold text-[var(--text-primary)]">
+                {databaseProfile?.displayName || user?.displayName || "AlphaLens User"}
+              </p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                {databaseProfile?.email || user?.email}
+              </p>
+              <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                @{databaseProfile?.username || "username-not-set"}
+              </p>
+              <p className="mt-2 text-xs uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                {databaseProfile?.provider || user?.providerData?.[0]?.providerId || "firebase"}
+              </p>
+            </div>
+          </div>
+        </GlassPanel>
+
+        <GlassPanel>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-xl bg-[var(--bg-secondary)] p-4 border border-[var(--border-color)]">
+              <p className="text-xs uppercase tracking-[0.18em] text-[var(--text-secondary)]">Research Count</p>
+              <p className="mt-2 text-3xl font-semibold text-[var(--text-primary)]">{historyItems.length}</p>
+            </div>
+            <div className="rounded-xl bg-[var(--bg-secondary)] p-4 border border-[var(--border-color)]">
+              <p className="text-xs uppercase tracking-[0.18em] text-[var(--text-secondary)]">Last Login</p>
+              <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
+                {databaseProfile?.lastLoginAt ? new Date(databaseProfile.lastLoginAt).toLocaleString() : "Available after sync"}
+              </p>
+            </div>
+          </div>
+
+          <form className="mt-6 flex flex-col gap-4" onSubmit={handleProfileSave}>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(event) => setDisplayName(event.target.value)}
+              placeholder="Display name"
+              className="h-12 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--color-accent)]"
             />
-          </GlassPanel>
+            <input
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="Username"
+              className="h-12 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--color-accent)]"
+            />
+            <input
+              type="tel"
+              value={contactNumber}
+              onChange={(event) => setContactNumber(event.target.value)}
+              placeholder="Contact number"
+              className="h-12 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--color-accent)]"
+            />
+            <input
+              type="url"
+              value={photoUrl}
+              onChange={(event) => setPhotoUrl(event.target.value)}
+              placeholder="Profile image URL"
+              className="h-12 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--color-accent)]"
+            />
 
-          <section className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-            <GlassPanel>
-              <div className="flex items-center gap-4">
-                {(databaseProfile?.photoUrl || user?.photoURL) ? (
-                  <img
-                    src={databaseProfile?.photoUrl || user?.photoURL}
-                    alt={databaseProfile?.displayName || user?.displayName || "User"}
-                    className="h-20 w-20 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-900 text-xl font-semibold text-white dark:bg-cyan-400 dark:text-slate-950">
-                    {(databaseProfile?.displayName || user?.displayName || "A").slice(0, 1).toUpperCase()}
-                  </div>
-                )}
-                <div>
-                  <p className="text-xl font-semibold text-slate-900 dark:text-white">
-                    {databaseProfile?.displayName || user?.displayName || "AlphaLens User"}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    {databaseProfile?.email || user?.email}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                    @{databaseProfile?.username || "username-not-set"}
-                  </p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
-                    {databaseProfile?.provider || user?.providerData?.[0]?.providerId || "firebase"}
-                  </p>
-                </div>
-              </div>
-            </GlassPanel>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                disabled={profileLoading}
+                className="rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-5 py-3 text-sm font-semibold text-white dark:text-[var(--text-inverse)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {profileLoading ? "Saving..." : "Save profile"}
+              </button>
+              <button
+                type="button"
+                onClick={handlePasswordReset}
+                className="rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-5 py-3 text-sm font-semibold text-[var(--text-secondary)] hover:-translate-y-0.5 hover:bg-[var(--bg-secondary)]"
+              >
+                Send password reset
+              </button>
+            </div>
+          </form>
 
-            <GlassPanel>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Research Count</p>
-                  <p className="mt-2 text-3xl font-semibold text-slate-900 dark:text-white">{historyItems.length}</p>
-                </div>
-                <div className="rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
-                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Last Login</p>
-                  <p className="mt-2 text-sm font-semibold text-slate-900 dark:text-white">
-                    {databaseProfile?.lastLoginAt ? new Date(databaseProfile.lastLoginAt).toLocaleString() : "Available after sync"}
-                  </p>
-                </div>
-              </div>
-
-              <form className="mt-6 flex flex-col gap-4" onSubmit={handleProfileSave}>
-                <input
-                  type="text"
-                  value={displayName}
-                  onChange={(event) => setDisplayName(event.target.value)}
-                  placeholder="Display name"
-                  className="h-12 rounded-2xl border border-slate-200/80 bg-white/80 px-4 text-sm text-slate-900 outline-none backdrop-blur focus:border-cyan-400 dark:border-white/10 dark:bg-white/5 dark:text-white"
-                />
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                  placeholder="Username"
-                  className="h-12 rounded-2xl border border-slate-200/80 bg-white/80 px-4 text-sm text-slate-900 outline-none backdrop-blur focus:border-cyan-400 dark:border-white/10 dark:bg-white/5 dark:text-white"
-                />
-                <input
-                  type="tel"
-                  value={contactNumber}
-                  onChange={(event) => setContactNumber(event.target.value)}
-                  placeholder="Contact number"
-                  className="h-12 rounded-2xl border border-slate-200/80 bg-white/80 px-4 text-sm text-slate-900 outline-none backdrop-blur focus:border-cyan-400 dark:border-white/10 dark:bg-white/5 dark:text-white"
-                />
-                <input
-                  type="url"
-                  value={photoUrl}
-                  onChange={(event) => setPhotoUrl(event.target.value)}
-                  placeholder="Profile image URL"
-                  className="h-12 rounded-2xl border border-slate-200/80 bg-white/80 px-4 text-sm text-slate-900 outline-none backdrop-blur focus:border-cyan-400 dark:border-white/10 dark:bg-white/5 dark:text-white"
-                />
-
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    type="submit"
-                    disabled={profileLoading}
-                    className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-cyan-400 dark:text-slate-950 dark:hover:bg-cyan-300"
-                  >
-                    {profileLoading ? "Saving..." : "Save profile"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handlePasswordReset}
-                    className="rounded-2xl border border-slate-200/80 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-900 hover:-translate-y-0.5 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                  >
-                    Send password reset
-                  </button>
-                </div>
-              </form>
-
-              {message ? <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-300">{message}</p> : null}
-              {error ? <p className="mt-4 text-sm text-rose-500 dark:text-rose-300">{error}</p> : null}
-            </GlassPanel>
-          </section>
-        </div>
-      </main>
-    </>
+          {message ? <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-300">{message}</p> : null}
+          {error ? <p className="mt-4 text-sm text-rose-500 dark:text-rose-300">{error}</p> : null}
+        </GlassPanel>
+      </section>
+    </div>
   );
 }
 

@@ -15,7 +15,7 @@ export default {
         accent: "#06b6d4"
       },
       fontFamily: {
-        sans: ["Segoe UI", "system-ui", "sans-serif"]
+        sans: ["Inter", "Segoe UI", "system-ui", "sans-serif"]
       },
       boxShadow: {
         panel: "0 24px 60px rgba(15, 23, 42, 0.10)",

@@ -44,8 +44,8 @@ async function syncAuthenticatedUser({
     update: {
       email,
       displayName,
-      ...(username !== undefined ? { username } : {}),
-      ...(contactNumber !== undefined ? { contactNumber } : {}),
+      ...(username ? { username } : {}),
+      ...(contactNumber ? { contactNumber } : {}),
       photoUrl,
       provider,
       lastLoginAt: new Date()
@@ -54,8 +54,8 @@ async function syncAuthenticatedUser({
       firebaseUid,
       email,
       displayName,
-      username,
-      contactNumber,
+      username: username || null,
+      contactNumber: contactNumber || null,
       photoUrl,
       provider,
       lastLoginAt: new Date()

@@ -3,22 +3,37 @@ import GlassPanel from "./ui/GlassPanel";
 function CompanySnapshot({ result }) {
   return (
     <GlassPanel>
-      <p className="text-sm uppercase tracking-[0.22em] text-signal dark:text-cyan-300">Company Snapshot</p>
-      <h2 className="mt-3 text-2xl font-semibold text-slate-900 dark:text-white">{result.companyName}</h2>
-      <div className="mt-6 space-y-4 text-sm text-slate-600 dark:text-slate-300">
-        <div className="rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
-          <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Primary reasoning</p>
-          <p className="mt-2 leading-7">{result.reasoning}</p>
-        </div>
-        <div className="rounded-2xl bg-slate-50 p-4 dark:bg-white/5">
-          <p className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Strengths</p>
-          <ul className="mt-2 space-y-2">
-            {result.strengths.map((strength) => (
-              <li key={strength}>{strength}</li>
+      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Company Profile</p>
+      <h2 className="mt-1.5 text-xl font-semibold text-[var(--text-primary)]">{result.companyName}</h2>
+
+      {/* Primary Reasoning */}
+      <div className="mt-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] p-4">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-2">AI Reasoning</p>
+        <p className="text-sm leading-relaxed text-[var(--text-secondary)]">{result.reasoning}</p>
+      </div>
+
+      {/* Strengths */}
+      {(result.strengths || []).length > 0 && (
+        <div className="mt-4">
+          <p className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5 mb-3">
+            <svg className="h-3.5 w-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Key Strengths
+          </p>
+          <ul className="space-y-2">
+            {result.strengths.map((strength, i) => (
+              <li
+                key={i}
+                className="flex items-start gap-2.5 rounded-xl border border-emerald-200/60 bg-emerald-50/40 dark:border-emerald-500/15 dark:bg-emerald-500/5 px-3 py-2.5 text-xs text-[var(--text-primary)] leading-relaxed"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                {strength}
+              </li>
             ))}
           </ul>
         </div>
-      </div>
+      )}
     </GlassPanel>
   );
 }

@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const researchRoutes = require("./routes/researchRoutes");
 const userRoutes = require("./routes/userRoutes");
+const chatbotRoutes = require("./routes/chatbotRoutes");
 const { notFound } = require("./middleware/notFound");
 const { errorHandler } = require("./middleware/errorHandler");
 
@@ -41,6 +42,7 @@ app.get("/api/health", (request, response) => {
 
 app.use("/api/research", researchRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

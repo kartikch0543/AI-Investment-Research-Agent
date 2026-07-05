@@ -14,7 +14,7 @@ module.exports = {
     committee: {
       primary: env.committeeModel,
       fallback1: "deepseek/deepseek-chat",
-      fallback2: "qwen/qwen3"
+      fallback2: "qwen/qwen3.6-flash"
     }
   }
 };

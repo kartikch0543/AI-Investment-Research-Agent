@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import PublicOnlyRoute from "./components/layout/PublicOnlyRoute";
+import ProtectedLayout from "./components/layout/ProtectedLayout";
 import DashboardPage from "./pages/DashboardPage";
 import HistoryPage from "./pages/HistoryPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -23,10 +24,12 @@ function App() {
       </Route>
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/app/dashboard" element={<DashboardPage />} />
-        <Route path="/app/history" element={<HistoryPage />} />
-        <Route path="/app/settings" element={<SettingsPage />} />
-        <Route path="/app/profile" element={<ProfilePage />} />
+        <Route element={<ProtectedLayout />}>
+          <Route path="/app/dashboard" element={<DashboardPage />} />
+          <Route path="/app/history" element={<HistoryPage />} />
+          <Route path="/app/settings" element={<SettingsPage />} />
+          <Route path="/app/profile" element={<ProfilePage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

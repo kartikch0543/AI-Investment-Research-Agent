@@ -1,37 +1,126 @@
 import {
-  BarChart,
-  Bar,
-  CartesianGrid,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
   ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
+  Tooltip
 } from "recharts";
+import GlassPanel from "../components/ui/GlassPanel";
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const val = payload[0].value;
+    function getColor(v) {
+      if (v >= 70) return "text-emerald-500";
+      if (v >= 40) return "text-amber-500";
+      return "text-rose-500";
+    }
+    return (
+      <div className="rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 py-3 shadow-xl backdrop-blur-md">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+          {payload[0].payload.name}
+        </p>
+        <p className={`text-2xl font-bold mt-0.5 tabular-nums ${getColor(val)}`}>
+          {val}
+          <span className="text-xs font-normal text-[var(--text-muted)] ml-1">/ 100</span>
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
+const CustomAngleTick = ({ x, y, payload }) => {
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      dominantBaseline="central"
+      fill="var(--text-muted)"
+      fontSize={10}
+      fontWeight={600}
+      fontFamily="Inter, sans-serif"
+    >
+      {payload.value}
+    </text>
+  );
+};
 
 function ScoreBreakdownChart({ scoreBreakdown }) {
   const data = [
     { name: "Financial", value: scoreBreakdown.financialHealth },
     { name: "Sentiment", value: scoreBreakdown.newsSentiment },
     { name: "Moat", value: scoreBreakdown.businessQuality },
-    { name: "Risk Adj", value: scoreBreakdown.riskAdjusted }
+    { name: "Risk Adj.", value: scoreBreakdown.riskAdjusted }
   ];
 
+  const average = Math.round(data.reduce((s, d) => s + d.value, 0) / data.length);
+
   return (
-    <section className="rounded-[28px] border border-slate-200/70 bg-white/70 p-8 shadow-panel backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/65 dark:shadow-glow">
-      <p className="text-sm uppercase tracking-[0.22em] text-signal dark:text-cyan-300">Chart</p>
-      <h2 className="mt-3 text-2xl font-semibold text-slate-900 dark:text-white">Score breakdown</h2>
-      <div className="mt-6 h-[320px]">
+    <GlassPanel>
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Analysis</p>
+          <h2 className="mt-1.5 text-xl font-semibold text-[var(--text-primary)]">Score Breakdown</h2>
+        </div>
+        <div className="text-right shrink-0">
+          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Average</p>
+          <p className="text-2xl font-bold text-[var(--color-accent)] tabular-nums">{average}</p>
+        </div>
+      </div>
+
+      {/* Radar Chart */}
+      <div className="h-[260px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.18} />
-            <XAxis dataKey="name" stroke="#64748b" />
-            <YAxis stroke="#64748b" domain={[0, 100]} />
-            <Tooltip />
-            <Bar dataKey="value" fill="#06b6d4" radius={[10, 10, 0, 0]} />
-          </BarChart>
+          <RadarChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
+            <defs>
+              <linearGradient id="radarFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--color-accent)" stopOpacity={0.4} />
+                <stop offset="100%" stopColor="var(--color-accent)" stopOpacity={0.05} />
+              </linearGradient>
+            </defs>
+            <PolarGrid
+              stroke="var(--border-color-strong)"
+              strokeOpacity={0.8}
+            />
+            <PolarAngleAxis
+              dataKey="name"
+              tick={<CustomAngleTick />}
+              tickLine={false}
+              axisLine={false}
+            />
+            <Radar
+              dataKey="value"
+              stroke="var(--color-accent)"
+              strokeWidth={2}
+              fill="url(#radarFill)"
+              dot={{ fill: "var(--color-accent)", strokeWidth: 0, r: 4 }}
+              activeDot={{ r: 6, fill: "var(--color-accent)", stroke: "var(--bg-surface)", strokeWidth: 2 }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+          </RadarChart>
         </ResponsiveContainer>
       </div>
-    </section>
+
+      {/* Score tiles */}
+      <div className="mt-4 grid grid-cols-4 gap-2">
+        {data.map(d => {
+          function getColor(v) {
+            if (v >= 70) return "text-emerald-600 dark:text-emerald-400";
+            if (v >= 40) return "text-amber-600 dark:text-amber-400";
+            return "text-rose-600 dark:text-rose-400";
+          }
+          return (
+            <div key={d.name} className="text-center rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] p-2.5">
+              <p className={`text-lg font-bold tabular-nums ${getColor(d.value)}`}>{d.value}</p>
+              <p className="text-[9px] text-[var(--text-muted)] font-medium uppercase tracking-wide mt-0.5">{d.name}</p>
+            </div>
+          );
+        })}
+      </div>
+    </GlassPanel>
   );
 }
 

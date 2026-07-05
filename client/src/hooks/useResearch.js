@@ -6,10 +6,11 @@ import { useSearchHistory } from "../context/SearchHistoryContext";
 
 const researchStages = [
   "Collecting Market Intelligence",
-  "Evaluating Company Fundamentals",
+  "Analyzing Business Fundamentals",
+  "Evaluating Financial Performance",
   "Analyzing Market Sentiment",
-  "Business Risk Assessment",
-  "Competitive Advantage Review",
+  "Assessing Business Risks",
+  "Reviewing Competitive Advantage",
   "Generating Investment Recommendation"
 ];
 
@@ -59,6 +60,8 @@ export function useResearch() {
       }
       setActiveStage(researchStages.length - 1);
       setResult(response);
+      sessionStorage.setItem("active-research-result", JSON.stringify(response));
+      window.dispatchEvent(new CustomEvent("active-research-changed", { detail: response }));
       addHistoryItem({
         companyName: response.companyName,
         decision: response.decision,
