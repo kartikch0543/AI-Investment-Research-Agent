@@ -91,24 +91,27 @@ sequenceDiagram
 - `context/` holds cross-page state, in this case lightweight search history.
 - `charts/` separates visualization code from general UI code.
 
-## Pluggable LLM Provider Layer
+## Pluggable LLM Provider & Model Router Layer
 
-Instead of tightly coupling our agents directly to the Google Gemini SDK, we've implemented a **Provider Pattern**.
+Instead of tightly coupling our agents directly to a single LLM or SDK, we've implemented an **Intelligent Model Router** on top of the **Provider Pattern**.
 
-### Why the Provider Pattern is Better
+### Why the Provider Pattern & Model Router is Better
 
-1. **Vendor Decoupling (Open/Closed Principle)**: The agents and orchestration graph are completely oblivious to which AI vendor or model is serving requests. If we want to switch models (e.g., from Gemini to Anthropic Claude, OpenAI, or a local LLaMA instance), we only need to add a provider under `providers/` and update `llm.config.js`. Zero agent code is touched.
-2. **Resilience & Fallbacks**: If our primary LLM provider fails due to rate limits (HTTP 429), quota issues, timeouts, or network outages, the `LLMService` automatically catches the failure, logs the event, and routes the request to our secondary provider (OpenRouter) in real-time. This keeps the application 100% online.
-3. **Consistent Contract (Interface Isolation)**: The LLM Service guarantees a standardized response format:
+1. **Vendor & Model Decoupling (Open/Closed Principle)**: The agents and orchestration graph are completely oblivious to which model is serving their request. We can change the model assigned to any agent dynamically in `.env` without changing a single line of agent code.
+2. **Task-Specific Optimization (Cost & Latency Reduction)**:
+   - **Narrow tasks** like extracting financial metrics or analyzing risk factors are routed to **`deepseek/deepseek-chat`** which has a highly analytical structure and is incredibly cost-efficient (saving up to 90% of token costs).
+   - **Text-heavy tasks** like summarizing news articles are routed to **`qwen/qwen3`** (or configured instruction models) which has high throughput and fast token generation.
+   - **High-order reasoning tasks** like synthesizing the final recommendation are routed to **`google/gemini-2.5-flash`** because the Investment Committee requires premium reasoning and a large context window to cross-reference multiple reports.
+3. **Resilient Multi-Stage Fallbacks**: If the primary model for the Committee Agent fails (e.g. 429 quota exhaustion or network timeout), the LLM Service automatically falls back to `deepseek/deepseek-chat`, and if that fails, to `qwen/qwen3`, preserving system availability.
+4. **Consistent Interface**: The LLM Service guarantees a standardized response format:
    ```javascript
    {
        success: true,
-       provider: "gemini",
-       model: "gemini-flash-latest",
+       provider: "openrouter",
+       model: "deepseek/deepseek-chat",
        text: "..."
    }
    ```
-   No matter how complex the downstream SDK response is, the service normalizes it, so the parsing logic inside our agents remains simple and unified.
 
 ## Why The Recommendation Is Deterministic
 

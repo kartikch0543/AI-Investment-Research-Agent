@@ -1,10 +1,13 @@
 const axios = require("axios");
-const config = require("../config/llm.config");
+const config = require("../config/model.config");
 const logger = require("../utils/logger");
 
-async function generate(prompt, options = {}) {
+/**
+ * Executes a call to the OpenRouter chat/completions endpoint using a dynamically resolved model.
+ */
+async function generate(modelName, prompt, options = {}) {
   const startTime = Date.now();
-  const { apiKey, model, baseUrl, appUrl, appName } = config.openrouter;
+  const { apiKey, baseUrl, appUrl, appName } = config;
 
   if (!apiKey) {
     return {
@@ -14,13 +17,11 @@ async function generate(prompt, options = {}) {
     };
   }
 
-  logger.info("Executing OpenRouter request", { provider: "openrouter", model });
-
   try {
     const response = await axios.post(
       `${baseUrl}/chat/completions`,
       {
-        model: model,
+        model: modelName,
         messages: [
           {
             role: "system",
@@ -48,13 +49,11 @@ async function generate(prompt, options = {}) {
     const latency = Date.now() - startTime;
     const choice = response.data?.choices?.[0];
     const text = choice?.message?.content || "";
-
-    // Extract tokens if available
     const usage = response.data?.usage || null;
 
     logger.info("OpenRouter request successful", {
       provider: "openrouter",
-      model,
+      model: modelName,
       latencyMs: latency,
       tokenUsage: usage
     });
@@ -62,15 +61,18 @@ async function generate(prompt, options = {}) {
     return {
       success: true,
       provider: "openrouter",
-      model,
-      text
+      model: modelName,
+      text,
+      latencyMs: latency,
+      tokenUsage: usage
     };
   } catch (error) {
     const latency = Date.now() - startTime;
     const errMsg = error.response?.data?.error?.message || error.message;
+
     logger.error("OpenRouter request failed", {
       provider: "openrouter",
-      model,
+      model: modelName,
       latencyMs: latency,
       error: errMsg
     });
@@ -78,7 +80,9 @@ async function generate(prompt, options = {}) {
     return {
       success: false,
       provider: "openrouter",
-      message: errMsg
+      model: modelName,
+      message: errMsg,
+      latencyMs: latency
     };
   }
 }

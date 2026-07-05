@@ -13,7 +13,15 @@ const env = {
   openrouterModel: process.env.OPENROUTER_MODEL || "google/gemini-2.5-flash",
   openrouterBaseUrl: process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1",
   appUrl: process.env.APP_URL || "http://localhost:5173",
-  appName: process.env.APP_NAME || "AlphaLens AI"
+  appName: process.env.APP_NAME || "AlphaLens AI",
+  
+  // Model Router variables
+  companyModel: process.env.COMPANY_MODEL || "deepseek/deepseek-chat",
+  financialModel: process.env.FINANCIAL_MODEL || "deepseek/deepseek-chat",
+  newsModel: process.env.NEWS_MODEL || "qwen/qwen3",
+  riskModel: process.env.RISK_MODEL || "deepseek/deepseek-chat",
+  moatModel: process.env.MOAT_MODEL || "deepseek/deepseek-chat",
+  committeeModel: process.env.COMMITTEE_MODEL || "google/gemini-2.5-flash"
 };
 
 module.exports = { env };
