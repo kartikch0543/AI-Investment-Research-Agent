@@ -2,43 +2,52 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const ThemeContext = createContext(null);
 const STORAGE_KEY = "alphalens-theme";
+const THEME_MODES = {
+  LIGHT: "light",
+  DARK: "dark",
+  SYSTEM: "system"
+};
 
 function getSystemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function getInitialTheme() {
+function getStoredThemeMode() {
   const savedTheme = window.localStorage.getItem(STORAGE_KEY);
 
-  if (savedTheme === "light" || savedTheme === "dark") {
+  if (
+    savedTheme === THEME_MODES.LIGHT ||
+    savedTheme === THEME_MODES.DARK ||
+    savedTheme === THEME_MODES.SYSTEM
+  ) {
     return savedTheme;
   }
 
-  return getSystemTheme();
+  return THEME_MODES.SYSTEM;
 }
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(getInitialTheme);
+  const [themeMode, setThemeMode] = useState(getStoredThemeMode);
+  const [systemTheme, setSystemTheme] = useState(getSystemTheme);
+
+  const resolvedTheme =
+    themeMode === THEME_MODES.SYSTEM
+      ? systemTheme
+      : themeMode;
 
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.toggle("dark", theme === "dark");
-    root.dataset.theme = theme;
-    window.localStorage.setItem(STORAGE_KEY, theme);
-  }, [theme]);
+    root.classList.toggle("dark", resolvedTheme === THEME_MODES.DARK);
+    root.dataset.theme = resolvedTheme;
+    root.style.colorScheme = resolvedTheme;
+  }, [resolvedTheme]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     function handleThemeChange(event) {
-      const savedTheme = window.localStorage.getItem(STORAGE_KEY);
-
-      if (savedTheme === "light" || savedTheme === "dark") {
-        return;
-      }
-
-      setTheme(event.matches ? "dark" : "light");
+      setSystemTheme(event.matches ? THEME_MODES.DARK : THEME_MODES.LIGHT);
     }
 
     mediaQuery.addEventListener("change", handleThemeChange);
@@ -48,17 +57,39 @@ export function ThemeProvider({ children }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (themeMode === THEME_MODES.SYSTEM) {
+      window.localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
+
+    window.localStorage.setItem(STORAGE_KEY, themeMode);
+  }, [themeMode]);
+
   function toggleTheme() {
-    setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
+    setThemeMode((currentThemeMode) => {
+      const currentResolvedTheme =
+        currentThemeMode === THEME_MODES.SYSTEM ? systemTheme : currentThemeMode;
+
+      return currentResolvedTheme === THEME_MODES.DARK
+        ? THEME_MODES.LIGHT
+        : THEME_MODES.DARK;
+    });
+  }
+
+  function setTheme(mode) {
+    setThemeMode(mode);
   }
 
   const value = useMemo(
     () => ({
-      theme,
+      themeMode,
+      resolvedTheme,
+      systemTheme,
       setTheme,
       toggleTheme
     }),
-    [theme]
+    [resolvedTheme, systemTheme, themeMode]
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
@@ -73,3 +104,5 @@ export function useTheme() {
 
   return contextValue;
 }
+
+export { THEME_MODES };
