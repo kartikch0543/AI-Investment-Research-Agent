@@ -35,12 +35,14 @@ export function useResearch() {
       return;
     }
 
+    let timelineTimer = null;
+
     try {
       setLoading(true);
       setError("");
       setActiveStage(0);
 
-      const timelineTimer = setInterval(() => {
+      timelineTimer = setInterval(() => {
         setActiveStage((currentStage) => {
           if (currentStage >= researchStages.length - 1) {
             return currentStage;
@@ -51,7 +53,10 @@ export function useResearch() {
       }, 600);
 
       const response = await runResearchRequest(companyName.trim(), user?.uid);
-      clearInterval(timelineTimer);
+      if (timelineTimer) {
+        clearInterval(timelineTimer);
+        timelineTimer = null;
+      }
       setActiveStage(researchStages.length - 1);
       setResult(response);
       addHistoryItem({
@@ -68,6 +73,9 @@ export function useResearch() {
       );
       setActiveStage(-1);
     } finally {
+      if (timelineTimer) {
+        clearInterval(timelineTimer);
+      }
       setLoading(false);
     }
   }
