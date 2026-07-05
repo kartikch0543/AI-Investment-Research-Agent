@@ -1,4 +1,4 @@
-const { createGeminiModel } = require("../../config/gemini");
+const llmService = require("../../services/llm.service");
 
 function normalizeObject(candidate, shape, fallback) {
   if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) {
@@ -20,22 +20,20 @@ function normalizeObject(candidate, shape, fallback) {
 }
 
 async function runStructuredPrompt({ prompt, fallback, shape }) {
-  const model = createGeminiModel();
-
-  if (!model) {
-    return fallback;
-  }
-
   try {
-    const response = await model.invoke([
-      [
-        "system",
-        "Return only valid JSON matching the requested shape. Do not include markdown."
-      ],
-      ["human", prompt]
-    ]);
+    const result = await llmService.generate(prompt);
 
-    const parsed = JSON.parse(response.content);
+    if (!result.success) {
+      return fallback;
+    }
+
+    let text = result.text.trim();
+    if (text.startsWith("```")) {
+      text = text.replace(/^```[a-zA-Z]*\n?/, "");
+      text = text.replace(/\n?```$/, "");
+    }
+
+    const parsed = JSON.parse(text.trim());
     return normalizeObject(parsed, shape, fallback);
   } catch (_error) {
     return fallback;

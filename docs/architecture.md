@@ -5,7 +5,7 @@ This document goes one level deeper than the main README. Its purpose is to expl
 ## System Architecture
 
 ```mermaid
-flowchart LR
+flowchart TD
     User[User in React Dashboard] --> Client[React Client]
     Client -->|POST /api/research| API[Express API]
     API --> Controller[Research Controller]
@@ -21,8 +21,22 @@ flowchart LR
     Risk --> Merge
     Moat --> Merge
     Merge --> Committee[Investment Committee Agent]
+    
+    subgraph LLM Provider Layer
+        Committee --> LLMService[LLM Service]
+        Fundamental --> LLMService
+        Sentiment --> LLMService
+        Risk --> LLMService
+        Moat --> LLMService
+        LLMService --> ProviderSelect{Provider Selection}
+        ProviderSelect -->|gemini| GeminiProvider[Gemini Provider]
+        ProviderSelect -->|openrouter| ORProvider[OpenRouter Provider]
+        GeminiProvider -->|Fallback| ORProvider
+    end
+    
     Committee --> API
     API --> Client
+    API --> Database[(Neon PostgreSQL)]
 ```
 
 ## Backend Request Flow
@@ -34,19 +48,20 @@ sequenceDiagram
     participant R as Research Route
     participant O as Orchestrator
     participant G as LangGraph
-    participant A as Agents
+    participant S as LLM Service
+    participant P as Providers
 
     U->>C: Enter company name
     C->>R: POST /api/research
     R->>O: validate and start research
     O->>G: invoke(initialState)
-    G->>A: gather company data
-    G->>A: run fundamentals
-    G->>A: run sentiment
-    G->>A: run risk
-    G->>A: run moat
-    G->>G: calculate deterministic score
-    G->>A: ask committee to explain result
+    G->>S: generate(prompt)
+    S->>P: select & execute primary provider
+    alt Primary fails (Gemini 429/Timeout)
+        S->>P: execute fallback provider (OpenRouter)
+    end
+    P-->>S: response JSON
+    S-->>G: raw model text
     G-->>O: final state
     O-->>R: formatted response
     R-->>C: JSON result
@@ -56,9 +71,10 @@ sequenceDiagram
 
 ### Backend
 
-- `config/` exists to isolate environment and dependency wiring from business logic.
+- `config/` exists to isolate environment, LLM configurations, and database singleton wiring from business logic.
+- `providers/` isolates vendor-specific SDK concerns (e.g. LangChain Google GenAI vs OpenRouter REST request headers).
 - `controllers/` exist to keep HTTP concerns thin.
-- `services/` exist to hold orchestration and deterministic business logic.
+- `services/` exist to hold orchestration, LLM provider routing, and deterministic business logic.
 - `agents/` exist to wrap focused AI responsibilities.
 - `graph/` exists so state and workflow stay explicit rather than being hidden inside controller code.
 - `prompts/` exist because prompts are part of the product logic and deserve versioned ownership.
@@ -74,6 +90,25 @@ sequenceDiagram
 - `services/` keep Axios calls out of components.
 - `context/` holds cross-page state, in this case lightweight search history.
 - `charts/` separates visualization code from general UI code.
+
+## Pluggable LLM Provider Layer
+
+Instead of tightly coupling our agents directly to the Google Gemini SDK, we've implemented a **Provider Pattern**.
+
+### Why the Provider Pattern is Better
+
+1. **Vendor Decoupling (Open/Closed Principle)**: The agents and orchestration graph are completely oblivious to which AI vendor or model is serving requests. If we want to switch models (e.g., from Gemini to Anthropic Claude, OpenAI, or a local LLaMA instance), we only need to add a provider under `providers/` and update `llm.config.js`. Zero agent code is touched.
+2. **Resilience & Fallbacks**: If our primary LLM provider fails due to rate limits (HTTP 429), quota issues, timeouts, or network outages, the `LLMService` automatically catches the failure, logs the event, and routes the request to our secondary provider (OpenRouter) in real-time. This keeps the application 100% online.
+3. **Consistent Contract (Interface Isolation)**: The LLM Service guarantees a standardized response format:
+   ```javascript
+   {
+       success: true,
+       provider: "gemini",
+       model: "gemini-flash-latest",
+       text: "..."
+   }
+   ```
+   No matter how complex the downstream SDK response is, the service normalizes it, so the parsing logic inside our agents remains simple and unified.
 
 ## Why The Recommendation Is Deterministic
 
@@ -101,11 +136,10 @@ If all of this lived in one prompt, it would be harder to debug and much harder 
 ## Current Trade-Offs
 
 - Finance and news providers are still mock-backed so the architecture can be built before provider lock-in.
-- Gemini integration is real, but the system falls back gracefully when the API key is missing.
-- PostgreSQL schema is defined early, but runtime persistence is deferred until the core flow is stable.
+- PostgreSQL schema is defined early, and runtime persistence is fully integrated using Neon and Prisma.
 
 ## Interview Summary
 
 A concise interview explanation:
 
-“I separated orchestration, scoring, prompts, and UI rendering so each layer had one responsibility. The backend uses a LangGraph workflow for focused research steps, while the final recommendation is deterministic. That balance gives us explainability, easier testing, and cleaner long-term maintenance.”
+“I separated orchestration, scoring, prompts, and UI rendering so each layer had one responsibility. The backend uses a LangGraph workflow for focused research steps, while the final recommendation is deterministic. Furthermore, I built a pluggable LLM Provider Layer using the Provider Pattern. This decouples our business logic from vendor SDKs, allowing us to route requests to Gemini or OpenRouter dynamically and handle rate-limiting or quota errors via automatic transparent fallbacks without crashing the app.”
