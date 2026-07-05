@@ -9,6 +9,9 @@ import SentimentPanel from "../components/SentimentPanel";
 import RiskPanel from "../components/RiskPanel";
 import SearchHistoryPanel from "../components/SearchHistoryPanel";
 import CompanySnapshot from "../components/CompanySnapshot";
+import ThemeToggle from "../components/theme/ThemeToggle";
+import GlassPanel from "../components/ui/GlassPanel";
+import SectionHeading from "../components/ui/SectionHeading";
 import ScoreBreakdownChart from "../charts/ScoreBreakdownChart";
 import { useResearch } from "../hooks/useResearch";
 
@@ -25,29 +28,25 @@ function DashboardPage() {
   return (
     <main className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-6">
-        <header className="rounded-3xl bg-white/80 p-8 shadow-panel backdrop-blur">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-signal">
-                AlphaLens AI
-              </p>
-              <h1 className="mt-2 text-4xl font-semibold text-ink">
-                Multi-agent investment research dashboard
-              </h1>
-              <p className="mt-3 text-base leading-7 text-slate-600">
-                Search a company, trace the research pipeline, and review a recommendation that is scored
-                deterministically and explained by focused AI agents.
-              </p>
-            </div>
-
-            <Link
-              to="/history"
-              className="inline-flex items-center justify-center rounded-full border border-slate-200 px-5 py-3 text-sm font-medium text-slate-700 transition hover:border-signal hover:text-signal"
-            >
-              View search history
-            </Link>
-          </div>
-        </header>
+        <GlassPanel className="relative overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
+          <SectionHeading
+            eyebrow="AlphaLens AI"
+            title="Multi-agent investment research workspace"
+            description="Search a company, trace the research pipeline, and review a recommendation that is scored deterministically and explained by focused AI agents."
+            action={
+              <div className="flex flex-wrap items-center gap-3">
+                <ThemeToggle />
+                <Link
+                  to="/history"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-200/70 bg-white/60 px-5 py-3 text-sm font-medium text-slate-700 backdrop-blur hover:border-signal hover:text-signal dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:border-cyan-400 dark:hover:text-cyan-300"
+                >
+                  View search history
+                </Link>
+              </div>
+            }
+          />
+        </GlassPanel>
 
         <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
           <SearchForm
