@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const researchRoutes = require("./routes/researchRoutes");
+const userRoutes = require("./routes/userRoutes");
 const { notFound } = require("./middleware/notFound");
 const { errorHandler } = require("./middleware/errorHandler");
 
@@ -22,6 +23,7 @@ app.get("/api/health", (request, response) => {
 });
 
 app.use("/api/research", researchRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

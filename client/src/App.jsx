@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/layout/ProtectedRoute";
 import PublicOnlyRoute from "./components/layout/PublicOnlyRoute";
 import DashboardPage from "./pages/DashboardPage";
 import HistoryPage from "./pages/HistoryPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -14,9 +15,11 @@ function App() {
   return (
     <Routes>
       <Route element={<PublicOnlyRoute />}>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/welcome" element={<LandingPage />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>

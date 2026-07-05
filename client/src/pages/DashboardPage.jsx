@@ -11,9 +11,12 @@ import SearchHistoryPanel from "../components/SearchHistoryPanel";
 import CompanySnapshot from "../components/CompanySnapshot";
 import ScoreBreakdownChart from "../charts/ScoreBreakdownChart";
 import ProtectedTopBar from "../components/layout/ProtectedTopBar";
+import QuickStats from "../components/QuickStats";
+import ResearchEmptyState from "../components/ResearchEmptyState";
 import GlassPanel from "../components/ui/GlassPanel";
 import SectionHeading from "../components/ui/SectionHeading";
 import { useResearch } from "../hooks/useResearch";
+import { useSearchHistory } from "../context/SearchHistoryContext";
 
 function DashboardPage() {
   const {
@@ -21,9 +24,12 @@ function DashboardPage() {
     result,
     loading,
     error,
+    activeStage,
+    researchStages,
     handleCompanyNameChange,
     submitResearch
   } = useResearch();
+  const { historyItems } = useSearchHistory();
 
   return (
     <>
@@ -47,6 +53,8 @@ function DashboardPage() {
             />
           </GlassPanel>
 
+          <QuickStats result={result} historyCount={historyItems.length} loading={loading} />
+
           <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
             <SearchForm
               companyName={companyName}
@@ -55,7 +63,12 @@ function DashboardPage() {
               onCompanyNameChange={handleCompanyNameChange}
               onSubmit={submitResearch}
             />
-            <ProgressTimeline loading={loading} hasResult={Boolean(result)} />
+            <ProgressTimeline
+              loading={loading}
+              hasResult={Boolean(result)}
+              activeStage={activeStage}
+              stages={researchStages}
+            />
           </section>
 
           {result ? (
@@ -96,7 +109,9 @@ function DashboardPage() {
                 />
               </section>
             </>
-          ) : null}
+          ) : (
+            <ResearchEmptyState />
+          )}
         </div>
       </main>
     </>

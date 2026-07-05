@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String            @id @default(cuid())
+  firebaseUid   String            @unique
+  email         String            @unique
+  displayName   String?
+  username      String?           @unique
+  contactNumber String?
+  photoUrl      String?
+  provider      String?
+  lastLoginAt   DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  researchItems ResearchHistory[]
+}
+
+model ResearchHistory {
+  id           String   @id @default(cuid())
+  userId       String
+  companyName  String
+  decision     String
+  confidence   Int
+  overallScore Int
+  jsonReport   Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model ResearchCache {
+  id         String   @id @default(cuid())
+  companyName String
+  cacheKey   String   @unique
+  report     Json
+  expiresAt  DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([companyName])
+}

@@ -1,15 +1,27 @@
 import { useState } from "react";
 
 import { runResearchRequest } from "../services/researchService";
+import { useAuth } from "../context/AuthContext";
 import { useSearchHistory } from "../context/SearchHistoryContext";
 
+const researchStages = [
+  "Collecting Market Intelligence",
+  "Evaluating Company Fundamentals",
+  "Analyzing Market Sentiment",
+  "Business Risk Assessment",
+  "Competitive Advantage Review",
+  "Generating Investment Recommendation"
+];
+
 export function useResearch() {
-  const [companyName, setCompanyName] = useState("Microsoft");
+  const [companyName, setCompanyName] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [activeStage, setActiveStage] = useState(-1);
 
   const { addHistoryItem } = useSearchHistory();
+  const { user } = useAuth();
 
   function handleCompanyNameChange(event) {
     setCompanyName(event.target.value);
@@ -26,7 +38,21 @@ export function useResearch() {
     try {
       setLoading(true);
       setError("");
-      const response = await runResearchRequest(companyName.trim());
+      setActiveStage(0);
+
+      const timelineTimer = setInterval(() => {
+        setActiveStage((currentStage) => {
+          if (currentStage >= researchStages.length - 1) {
+            return currentStage;
+          }
+
+          return currentStage + 1;
+        });
+      }, 600);
+
+      const response = await runResearchRequest(companyName.trim(), user?.uid);
+      clearInterval(timelineTimer);
+      setActiveStage(researchStages.length - 1);
       setResult(response);
       addHistoryItem({
         companyName: response.companyName,
@@ -40,6 +66,7 @@ export function useResearch() {
         requestError.response?.data?.error?.message ||
           "The research request failed. Check the backend server and try again."
       );
+      setActiveStage(-1);
     } finally {
       setLoading(false);
     }
@@ -50,6 +77,8 @@ export function useResearch() {
     result,
     loading,
     error,
+    activeStage,
+    researchStages,
     handleCompanyNameChange,
     submitResearch
   };

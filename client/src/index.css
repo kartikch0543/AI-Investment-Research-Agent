@@ -29,6 +29,7 @@
 
 html {
   scroll-behavior: smooth;
+  background: #f8fafc;
 }
 
 body {
@@ -41,6 +42,10 @@ body {
   transition:
     background 240ms ease,
     color 240ms ease;
+}
+
+html.dark {
+  background: #020617;
 }
 
 #root {
@@ -61,7 +66,9 @@ body::before {
 
 a,
 button,
-input {
+input,
+svg,
+path {
   transition:
     color 180ms ease,
     background-color 180ms ease,

@@ -8,6 +8,14 @@ const THEME_MODES = {
   SYSTEM: "system"
 };
 
+function applyResolvedTheme(theme) {
+  const root = window.document.documentElement;
+
+  root.classList.toggle("dark", theme === THEME_MODES.DARK);
+  root.dataset.theme = theme;
+  root.style.colorScheme = theme;
+}
+
 function getSystemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
@@ -36,11 +44,7 @@ export function ThemeProvider({ children }) {
       : themeMode;
 
   useEffect(() => {
-    const root = window.document.documentElement;
-
-    root.classList.toggle("dark", resolvedTheme === THEME_MODES.DARK);
-    root.dataset.theme = resolvedTheme;
-    root.style.colorScheme = resolvedTheme;
+    applyResolvedTheme(resolvedTheme);
   }, [resolvedTheme]);
 
   useEffect(() => {
@@ -86,6 +90,7 @@ export function ThemeProvider({ children }) {
       themeMode,
       resolvedTheme,
       systemTheme,
+      isDark: resolvedTheme === THEME_MODES.DARK,
       setTheme,
       toggleTheme
     }),

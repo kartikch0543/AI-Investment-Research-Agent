@@ -1,7 +1,8 @@
 const { z } = require("zod");
 
 const researchRequestSchema = z.object({
-  companyName: z.string().trim().min(1, "Company name is required")
+  companyName: z.string().trim().min(1, "Company name is required"),
+  firebaseUid: z.string().trim().min(1, "Firebase user id is required").optional()
 });
 
 function validateResearchRequest(payload) {
