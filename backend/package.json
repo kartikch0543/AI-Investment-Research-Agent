@@ -1,0 +1,22 @@
+{
+  "name": "alphalens-ai-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend for AlphaLens AI multi-agent investment research agent",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@langchain/core": "^0.3.56",
+    "@langchain/google-genai": "^0.1.10",
+    "@langchain/langgraph": "^0.2.39",
+    "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "zod": "^3.24.2"
+  }
+}
