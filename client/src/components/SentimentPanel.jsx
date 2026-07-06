@@ -5,38 +5,54 @@ function SentimentMeter({ score }) {
   const num = typeof score === "number" ? score : parseFloat(score) || 50;
   const pct = Math.min(100, Math.max(0, num));
   
-  function getColor(v) {
-    if (v >= 60) return "from-emerald-500 to-emerald-400";
-    if (v >= 35) return "from-amber-500 to-amber-400";
-    return "from-rose-500 to-rose-400";
+  function getBarColor(v) {
+    if (v >= 60) return "bg-[var(--color-buy)]";
+    if (v >= 35) return "bg-[var(--color-watchlist)]";
+    return "bg-[var(--color-avoid)]";
   }
 
   function getLabel(v) {
-    if (v >= 65) return { text: "Bullish", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20" };
-    if (v >= 45) return { text: "Neutral", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20" };
-    return { text: "Bearish", color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20" };
+    if (v >= 65) {
+      return { 
+        text: "Bullish", 
+        color: "text-[var(--color-buy)]", 
+        badge: "bg-[var(--color-buy-bg)] text-[var(--color-buy)] border-[var(--color-buy-border)]" 
+      };
+    }
+    if (v >= 45) {
+      return { 
+        text: "Neutral", 
+        color: "text-[var(--color-watchlist)]", 
+        badge: "bg-[var(--color-watchlist-bg)] text-[var(--color-watchlist)] border-[var(--color-watchlist-border)]" 
+      };
+    }
+    return { 
+      text: "Bearish", 
+      color: "text-[var(--color-avoid)]", 
+      badge: "bg-[var(--color-avoid-bg)] text-[var(--color-avoid)] border-[var(--color-avoid-border)]" 
+    };
   }
 
   const labelConfig = getLabel(pct);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Sentiment Score</p>
-        <div className={`rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${labelConfig.bg} ${labelConfig.color}`}>
+        <div className={`rounded-lg border px-2 py-0.5 text-[10px] font-bold ${labelConfig.badge}`}>
           {labelConfig.text}
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <div className="flex-1 h-2.5 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] overflow-hidden">
+        <div className="flex-1 h-1.5 rounded-full bg-[var(--bg-secondary)] overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={`h-full rounded-full bg-gradient-to-r ${getColor(pct)}`}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className={`h-full rounded-full ${getBarColor(pct)}`}
           />
         </div>
-        <span className={`text-base font-bold tabular-nums shrink-0 ${labelConfig.color}`}>{num}</span>
+        <span className={`text-sm font-bold tabular-nums shrink-0 ${labelConfig.color}`}>{num}</span>
       </div>
     </div>
   );
@@ -45,26 +61,29 @@ function SentimentMeter({ score }) {
 function SentimentPanel({ sentiment }) {
   return (
     <GlassPanel>
-      <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Sentiment Analysis</p>
-      <h2 className="mt-1.5 text-xl font-semibold text-[var(--text-primary)]">Market Sentiment</h2>
-      <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{sentiment.summary}</p>
+      <div className="border-b border-[var(--border-color)] pb-3 mb-4">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Sentiment Analysis</p>
+        <h2 className="mt-1 text-base font-bold text-[var(--text-primary)]">Market Sentiment</h2>
+      </div>
+      
+      <p className="text-sm leading-relaxed text-[var(--text-secondary)]">{sentiment.summary}</p>
 
-      <div className="mt-5">
+      <div className="mt-4">
         <SentimentMeter score={sentiment.score} />
       </div>
 
       {(sentiment.positiveDrivers || []).length > 0 && (
         <div className="mt-5">
-          <p className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5 mb-3">
-            <span className="text-emerald-500">●</span> Positive Drivers
+          <p className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5 mb-2.5">
+            <span className="text-[var(--color-buy)] text-xs">▲</span> Positive Drivers
           </p>
-          <ul className="space-y-2">
+          <ul className="space-y-1.5">
             {(sentiment.positiveDrivers || []).map((item, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 rounded-xl border border-emerald-200/60 bg-emerald-50/40 dark:border-emerald-500/15 dark:bg-emerald-500/5 px-3 py-2.5 text-xs text-[var(--text-primary)] leading-relaxed"
+                className="flex items-start gap-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)]/30 px-3 py-2 text-xs text-[var(--text-secondary)] leading-relaxed"
               >
-                <svg className="h-3.5 w-3.5 text-emerald-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <svg className="h-3.5 w-3.5 text-[var(--color-buy)] mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 {item}

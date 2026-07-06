@@ -51,10 +51,10 @@ function LandingPage() {
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-accent)] text-sm font-bold text-white dark:text-[var(--text-inverse)] shadow-md">
-              AL
+              TI
             </div>
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--color-accent)]">AlphaLens</p>
+              <p className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--color-accent)]">TradeIntel</p>
               <p className="text-xs text-[var(--text-muted)]">AI Investment Research</p>
             </div>
           </div>
@@ -89,7 +89,7 @@ function LandingPage() {
             </h1>
 
             <p className="mt-6 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] max-w-2xl mx-auto">
-              AlphaLens analyzes any public company with 7 specialized AI agents — delivering structured research,
+              TradeIntel analyzes any public company with 7 specialized AI agents — delivering structured research,
               transparent scoring, and an explainable BUY / WATCHLIST / AVOID recommendation.
             </p>
 
@@ -143,7 +143,7 @@ function LandingPage() {
         <GlassPanel className="relative overflow-hidden">
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)] to-transparent opacity-30" />
           <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Pipeline</p>
-          <h2 className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">How AlphaLens works</h2>
+          <h2 className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">How TradeIntel works</h2>
           <p className="mt-2 text-sm text-[var(--text-secondary)] max-w-xl">
             Each research run executes a multi-stage pipeline coordinated by LangGraph.
           </p>
@@ -167,7 +167,7 @@ function LandingPage() {
         {/* CTA FOOTER */}
         <div className="text-center py-8 border-t border-[var(--border-color)]">
           <p className="text-sm text-[var(--text-muted)]">
-            &copy; {new Date().getFullYear()} AlphaLens AI · Built with LangGraph, Firebase & React
+            &copy; {new Date().getFullYear()} TradeIntel AI · Built with LangGraph, Firebase & React
           </p>
         </div>
       </div>

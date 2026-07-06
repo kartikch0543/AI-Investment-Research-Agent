@@ -1,25 +1,32 @@
+/** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
-        ink: "#0b1120",
-        mist: "#dbe4f0",
-        canvas: "#f6f8fb",
-        signal: "#0f766e",
-        ember: "#b45309",
-        danger: "#b91c1c",
-        panel: "#ffffff",
-        "panel-dark": "#0f172a",
-        accent: "#06b6d4"
+        background: "var(--bg-primary)",
+        sidebar: "var(--bg-secondary)",
+        card: "var(--bg-surface)",
+        border: "var(--border-color)",
+        accent: "var(--color-accent)",
+        "accent-hover": "var(--color-accent-hover)",
+        buy: "var(--color-buy)",
+        watchlist: "var(--color-watchlist)",
+        avoid: "var(--color-avoid)"
       },
       fontFamily: {
-        sans: ["Inter", "Segoe UI", "system-ui", "sans-serif"]
+        sans: ["Geist", "Inter", "Segoe UI", "system-ui", "sans-serif"]
       },
       boxShadow: {
-        panel: "0 24px 60px rgba(15, 23, 42, 0.10)",
-        glow: "0 0 0 1px rgba(255,255,255,0.06), 0 24px 80px rgba(8, 15, 34, 0.35)"
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)"
+      },
+      borderRadius: {
+        xl: "12px",
+        "2xl": "16px"
       }
     }
   },

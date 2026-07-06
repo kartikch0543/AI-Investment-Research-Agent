@@ -1,6 +1,6 @@
 function buildCommitteePrompt(state) {
   return `
-You are the Investment Committee Agent for AlphaLens AI.
+You are the Investment Committee Agent for TradeIntel AI.
 
 You must explain the recommendation based on the prepared analysis. Do not invent new evidence.
 

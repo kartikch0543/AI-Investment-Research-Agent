@@ -310,7 +310,7 @@ function MessageContent({ content }) {
 
 const WELCOME_MESSAGE = {
   role: "assistant",
-  content: "Hello! I'm your **AlphaLens Copilot** — an AI research assistant trained to help you understand investment metrics, analyze research results, and answer financial questions.\n\nYou can ask me about:\n- Financial ratios and metrics (PE, PB, EV/EBITDA)\n- Competitive moats and business quality\n- Risk analysis and interpretation\n- The current company you've researched\n- Investment concepts and terminology",
+  content: "Hello! I'm your **TradeIntel Copilot** — an AI research assistant trained to help you understand investment metrics, analyze research results, and answer financial questions.\n\nYou can ask me about:\n- Financial ratios and metrics (PE, PB, EV/EBITDA)\n- Competitive moats and business quality\n- Risk analysis and interpretation\n- The current company you've researched\n- Investment concepts and terminology",
   timestamp: new Date().toISOString(),
   isWelcome: true
 };
@@ -329,7 +329,7 @@ function TypingIndicator() {
           <div className="typing-dot h-2 w-2 rounded-full bg-[var(--text-muted)]" />
           <div className="typing-dot h-2 w-2 rounded-full bg-[var(--text-muted)]" />
         </div>
-        <p className="mt-1 text-[10px] text-[var(--text-muted)]">AlphaLens is thinking...</p>
+        <p className="mt-1 text-[10px] text-[var(--text-muted)]">TradeIntel is thinking...</p>
       </div>
     </div>
   );
@@ -418,7 +418,7 @@ function EmptyState({ onSend, researchContext }) {
     : [
         { icon: "📐", label: "What is Price-to-Earnings (PE) Ratio?", query: "Explain the PE Ratio — definition, formula, and how to interpret it for stock analysis." },
         { icon: "🏰", label: "What is a competitive moat?", query: "What is a competitive moat in investing? Give me examples and why it matters." },
-        { icon: "🔍", label: "How does AlphaLens evaluate stocks?", query: "How does the AlphaLens multi-agent pipeline evaluate and score a company?" },
+        { icon: "🔍", label: "How does TradeIntel evaluate stocks?", query: "How does the TradeIntel multi-agent pipeline evaluate and score a company?" },
       ];
 
   return (
@@ -430,7 +430,7 @@ function EmptyState({ onSend, researchContext }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
-        <h3 className="text-base font-semibold text-[var(--text-primary)]">AlphaLens Copilot</h3>
+        <h3 className="text-base font-semibold text-[var(--text-primary)]">TradeIntel Copilot</h3>
         <p className="mt-1.5 text-xs text-[var(--text-secondary)] max-w-xs mx-auto leading-relaxed">
           {company
             ? `Contextually aware of your ${company} analysis. Ask me anything about it.`
@@ -658,7 +658,7 @@ function ChatbotDrawer({ isOpen, onClose, onOpen }) {
                   <span className={`absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 rounded-full border-2 border-[var(--bg-surface)] ${currentStatus.color}`} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[var(--text-primary)]">AlphaLens Copilot</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)]">TradeIntel Copilot</p>
                   <p className="text-[10px] text-[var(--text-muted)]">{currentStatus.label}</p>
                 </div>
               </div>

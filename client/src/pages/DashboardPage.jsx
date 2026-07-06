@@ -44,7 +44,7 @@ function DashboardPage() {
       {/* Hero Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">AlphaLens AI</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">TradeIntel AI</p>
           <h1 className="mt-1 text-2xl font-semibold text-[var(--text-primary)]">
             {greeting()}, <span className="text-[var(--color-accent)]">{displayName}</span>
           </h1>

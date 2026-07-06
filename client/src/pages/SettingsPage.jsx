@@ -13,7 +13,7 @@ function SettingsPage() {
         <SectionHeading
           eyebrow="Settings"
           title="Workspace settings"
-          description="Manage appearance, account connectivity, and the current status of AlphaLens services."
+          description="Manage appearance, account connectivity, and the current status of TradeIntel services."
         />
       </GlassPanel>
 
@@ -41,7 +41,7 @@ function SettingsPage() {
         <GlassPanel>
           <p className="text-sm font-semibold text-[var(--text-primary)]">Connected Google account</p>
           <div className="mt-5 rounded-xl bg-[var(--bg-secondary)] p-4 border border-[var(--border-color)]">
-            <p className="font-medium text-[var(--text-primary)]">{user?.displayName || "AlphaLens User"}</p>
+            <p className="font-medium text-[var(--text-primary)]">{user?.displayName || "TradeIntel User"}</p>
             <p className="mt-1 text-sm text-[var(--text-secondary)]">{user?.email}</p>
           </div>
         </GlassPanel>
@@ -51,7 +51,7 @@ function SettingsPage() {
         {[
           { label: "Gemini API", status: "Configured in environment" },
           { label: "Database", status: "Schema prepared, persistence pending" },
-          { label: "About AlphaLens", status: "AI-assisted investment research workspace" }
+          { label: "About TradeIntel", status: "AI-assisted investment research workspace" }
         ].map((item) => (
           <GlassPanel key={item.label}>
             <p className="text-sm font-semibold text-[var(--text-primary)]">{item.label}</p>

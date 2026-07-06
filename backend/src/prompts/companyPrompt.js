@@ -1,6 +1,6 @@
 function buildCompanyPrompt(state) {
   return `
-You are the Company Agent for AlphaLens AI.
+You are the Company Agent for TradeIntel AI.
 
 Company: ${state.companyName}
 

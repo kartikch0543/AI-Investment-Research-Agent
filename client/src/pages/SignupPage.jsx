@@ -58,13 +58,13 @@ function SignupPage() {
 
       <GlassPanel className="w-full max-w-md p-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-accent-light)] text-sm font-bold text-[var(--color-accent)] mb-3">
-          AL
+          TI
         </div>
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-accent)]">
           Create Account
         </p>
         <h1 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
-          Start using AlphaLens AI
+          Start using TradeIntel AI
         </h1>
         <p className="mt-2 text-xs leading-relaxed text-[var(--text-secondary)]">
           Create your workspace with your details, email and password, or continue with Google.

@@ -39,7 +39,7 @@ function HistoryPage() {
         <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Log</p>
         <h1 className="mt-1 text-2xl font-semibold text-[var(--text-primary)]">Research History</h1>
         <p className="mt-1 text-sm text-[var(--text-secondary)]">
-          Review all company analyses from your AlphaLens workspace.
+          Review all company analyses from your TradeIntel workspace.
         </p>
       </div>
 
@@ -48,9 +48,9 @@ function HistoryPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Total Analyses", value: historyItems.length, color: "text-[var(--text-primary)]" },
-            { label: "Buy Signals", value: buyCount, color: "text-emerald-600 dark:text-emerald-400" },
-            { label: "Watchlist", value: watchCount, color: "text-amber-600 dark:text-amber-400" },
-            { label: "Avoid", value: avoidCount, color: "text-rose-600 dark:text-rose-400" }
+            { label: "Buy Signals", value: buyCount, color: "text-[var(--color-buy)]" },
+            { label: "Watchlist", value: watchCount, color: "text-[var(--color-watchlist)]" },
+            { label: "Avoid", value: avoidCount, color: "text-[var(--color-avoid)]" }
           ].map(stat => (
             <div key={stat.label} className="premium-panel rounded-xl p-4 border border-[var(--border-color)]">
               <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{stat.label}</p>

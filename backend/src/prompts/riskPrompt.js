@@ -1,6 +1,6 @@
 function buildRiskPrompt(state) {
   return `
-You are the Risk Analysis Agent for AlphaLens AI.
+You are the Risk Analysis Agent for TradeIntel AI.
 
 Review the company profile, financials, and recent news:
 ${JSON.stringify(

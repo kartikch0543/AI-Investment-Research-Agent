@@ -1,6 +1,6 @@
 function buildFundamentalPrompt(state) {
   return `
-You are the Fundamental Analysis Agent for AlphaLens AI.
+You are the Fundamental Analysis Agent for TradeIntel AI.
 
 Analyze the company using this financial data:
 ${JSON.stringify(state.financialData, null, 2)}

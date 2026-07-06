@@ -1,6 +1,6 @@
 function buildSentimentPrompt(state) {
   return `
-You are the News Sentiment Agent for AlphaLens AI.
+You are the News Sentiment Agent for TradeIntel AI.
 
 Review this news data:
 ${JSON.stringify(state.newsArticles, null, 2)}

@@ -52,7 +52,7 @@ function ResearchEmptyState() {
         </div>
 
         <p className="max-w-2xl text-sm leading-relaxed text-[var(--text-secondary)] mb-8">
-          AlphaLens AI uses a multi-agent pipeline powered by LangGraph to analyze any publicly traded company.
+          TradeIntel AI uses a multi-agent pipeline powered by LangGraph to analyze any publicly traded company.
           Enter a company name above to generate a structured investment recommendation with traceable, explainable outputs.
         </p>
 

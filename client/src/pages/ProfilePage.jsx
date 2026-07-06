@@ -54,8 +54,8 @@ function ProfilePage() {
       <GlassPanel>
         <SectionHeading
           eyebrow="Profile"
-          title={user?.displayName || "AlphaLens User"}
-          description="Your connected Google account is used to access the AlphaLens research workspace."
+          title={user?.displayName || "TradeIntel User"}
+          description="Your connected Google account is used to access the TradeIntel research workspace."
         />
       </GlassPanel>
 
@@ -75,7 +75,7 @@ function ProfilePage() {
             )}
             <div>
               <p className="text-xl font-semibold text-[var(--text-primary)]">
-                {databaseProfile?.displayName || user?.displayName || "AlphaLens User"}
+                {databaseProfile?.displayName || user?.displayName || "TradeIntel User"}
               </p>
               <p className="mt-1 text-sm text-[var(--text-secondary)]">
                 {databaseProfile?.email || user?.email}

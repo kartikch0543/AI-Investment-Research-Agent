@@ -7,9 +7,9 @@ function PublicOnlyRoute() {
 
   if (authLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center px-6">
-        <div className="rounded-[28px] border border-slate-200/70 bg-white/70 px-8 py-6 text-sm text-slate-600 shadow-panel backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/65 dark:text-slate-300 dark:shadow-glow">
-          Preparing your AlphaLens experience...
+      <main className="flex min-h-screen items-center justify-center px-6 bg-[var(--bg-primary)]">
+        <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-6 py-4 text-xs font-semibold text-[var(--text-secondary)] shadow-sm">
+          Preparing your TradeIntel experience...
         </div>
       </main>
     );

@@ -50,13 +50,13 @@ function LoginPage() {
 
       <GlassPanel className="w-full max-w-md">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-accent-light)] text-sm font-bold text-[var(--color-accent)] mb-4">
-          AL
+          TI
         </div>
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-accent)]">
           Welcome Back
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--text-primary)]">
-          Log in to AlphaLens AI
+          Log in to TradeIntel AI
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">
           Access your research workspace with email and password or continue with Google.

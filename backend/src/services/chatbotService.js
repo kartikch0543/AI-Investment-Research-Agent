@@ -4,7 +4,7 @@ const logger = require("../utils/logger");
 async function getChatResponse({ message, history, researchContext }) {
   const companyName = researchContext?.companyName;
   
-  const systemPrompt = `You are the AlphaLens AI Assistant, a professional investment copilot.
+  const systemPrompt = `You are the TradeIntel AI Assistant, a professional investment copilot.
 Your purpose is to answer questions about the researched company, investment terminology, financial metrics, and project calculations.
 
 ${researchContext ? `You are currently discussing the company: ${companyName}. Here is the context of our latest research on ${companyName}:
@@ -16,7 +16,7 @@ ${researchContext ? `You are currently discussing the company: ${companyName}. H
 - Moat/Business Quality Summary: ${researchContext.moat?.summary || "No moat summary available"}
 - Financial Summary: ${researchContext.financialSummary?.summary || "No financial summary available"}
 - Sentiment/News Summary: ${researchContext.sentiment?.summary || "No sentiment summary available"}
-- Key Risks: ${(researchContext.risks || []).join(", ")}` : "No specific company is currently being researched. You can answer general questions about investment terms (e.g. PE Ratio, Moat, EBITDA, etc.) or explain how the AlphaLens multi-agent research workspace works."}
+- Key Risks: ${(researchContext.risks || []).join(", ")}` : "No specific company is currently being researched. You can answer general questions about investment terms (e.g. PE Ratio, Moat, EBITDA, etc.) or explain how the TradeIntel multi-agent research workspace works."}
 
 Answer the user's question accurately, concisely, and professionally. Use clean markdown format. Keep answers direct and concise.`;
 

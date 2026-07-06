@@ -71,7 +71,7 @@ function QuickStats({ result, historyCount, loading }) {
       value: loading ? "Running" : result ? "Ready" : "Idle",
       hint: loading ? "AI research pipeline is active." : result ? "Results are ready to review." : "Search a company to begin.",
       config: STAT_CONFIGS[0],
-      colorClass: loading ? "text-blue-500 dark:text-blue-400" : result ? "text-[var(--color-buy)]" : "text-[var(--text-muted)]"
+      colorClass: loading ? "text-[var(--color-accent)]" : result ? "text-[var(--color-buy)]" : "text-[var(--text-muted)]"
     },
     {
       label: "AI Recommendation",

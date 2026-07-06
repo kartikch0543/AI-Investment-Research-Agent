@@ -78,7 +78,7 @@ function ProtectedLayout() {
       const matched = group.items.find(item => item.to === location.pathname);
       if (matched) return matched.label;
     }
-    return "AlphaLens";
+    return "TradeIntel";
   };
 
   return (
@@ -105,8 +105,8 @@ function ProtectedLayout() {
         {/* Sidebar Header */}
         <div className="flex h-16 items-center justify-between px-4 border-b border-[var(--border-color)] shrink-0">
           <Link to="/app/dashboard" className="flex items-center gap-3 overflow-hidden">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent)] text-sm font-bold text-white dark:text-[var(--text-inverse)] shadow-sm">
-              AL
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent)] text-xs font-bold text-white dark:text-[var(--text-inverse)] shadow-sm">
+              TI
             </div>
             {!isCollapsed && (
               <motion.div
@@ -114,8 +114,8 @@ function ProtectedLayout() {
                 animate={{ opacity: 1, x: 0 }}
                 className="flex flex-col"
               >
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-accent)]">
-                  AlphaLens
+                <span className="text-xs font-bold uppercase tracking-[0.24em] text-[var(--text-primary)]">
+                  TradeIntel
                 </span>
                 <span className="text-[10px] text-[var(--text-muted)]">Research Hub</span>
               </motion.div>
@@ -145,14 +145,14 @@ function ProtectedLayout() {
           <div className="px-4 py-3 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]/30 shrink-0">
             <div className="flex items-center gap-3">
               {user.photoURL ? (
-                <img src={user.photoURL} alt="Avatar" className="h-9 w-9 rounded-xl object-cover border border-[var(--border-color)]" />
+                <img src={user.photoURL} alt="Avatar" className="h-8 w-8 rounded-lg object-cover border border-[var(--border-color)]" />
               ) : (
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent)] text-xs font-bold text-white dark:text-[var(--text-inverse)] shadow-sm">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent)] text-xs font-bold text-white dark:text-[var(--text-inverse)] shadow-sm">
                   {(user.displayName || user.email || "U").slice(0, 1).toUpperCase()}
                 </div>
               )}
               <div className="flex flex-col min-w-0">
-                <span className="text-xs font-semibold text-[var(--text-primary)] truncate">{user.displayName || "AlphaLens User"}</span>
+                <span className="text-xs font-semibold text-[var(--text-primary)] truncate">{user.displayName || "TradeIntel User"}</span>
                 <span className="text-[10px] text-[var(--text-muted)] truncate">{user.email}</span>
               </div>
             </div>
@@ -237,7 +237,7 @@ function ProtectedLayout() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                   </span>
-                  <span className="text-[11px] font-semibold text-[var(--text-primary)]">AlphaLens Copilot</span>
+                  <span className="text-[11px] font-semibold text-[var(--text-primary)]">TradeIntel Copilot</span>
                 </div>
                 <span className="text-[9px] uppercase tracking-wider text-emerald-500 font-bold">Online</span>
               </div>
