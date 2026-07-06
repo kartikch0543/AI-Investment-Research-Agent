@@ -63,17 +63,19 @@
   /* Premium Glowing Dark Fintech Mode */
   --bg-primary: #07090E;
   --bg-secondary: #0D111A;
-  --bg-surface: rgba(13, 17, 26, 0.7);
+  --bg-surface: #0F1520;
   --bg-elevated: #161C2A;
 
+  /* HIGH CONTRAST TEXT — all clearly visible on dark background */
   --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #475569;
+  --text-secondary: #B8C4D4;
+  --text-muted: #7A8FA8;
   --text-inverse: #07090E;
 
-  --border-color: rgba(37, 99, 235, 0.08);
-  --border-color-strong: rgba(37, 99, 235, 0.18);
-  --border-color-glow: rgba(255, 255, 255, 0.01);
+  /* Visible solid borders */
+  --border-color: rgba(255, 255, 255, 0.07);
+  --border-color-strong: rgba(255, 255, 255, 0.14);
+  --border-color-glow: rgba(255, 255, 255, 0.02);
 
   /* Primary Accent: Glowing Emerald Mint Green */
   --color-accent: #10B981;
@@ -84,20 +86,20 @@
   /* Semantic - Buy */
   --color-buy: #10B981;
   --color-buy-bg: rgba(16, 185, 129, 0.1);
-  --color-buy-border: rgba(16, 185, 129, 0.2);
+  --color-buy-border: rgba(16, 185, 129, 0.25);
 
   /* Semantic - Watchlist */
   --color-watchlist: #F59E0B;
   --color-watchlist-bg: rgba(245, 158, 11, 0.1);
-  --color-watchlist-border: rgba(245, 158, 11, 0.2);
+  --color-watchlist-border: rgba(245, 158, 11, 0.25);
 
   /* Semantic - Avoid */
   --color-avoid: #EF4444;
   --color-avoid-bg: rgba(239, 68, 68, 0.1);
-  --color-avoid-border: rgba(239, 68, 68, 0.2);
+  --color-avoid-border: rgba(239, 68, 68, 0.25);
 
   /* Grid dots */
-  --app-grid: rgba(255, 255, 255, 0.01);
+  --app-grid: rgba(255, 255, 255, 0.012);
 
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
