@@ -21,7 +21,8 @@ function ForgotPasswordPage() {
       await requestPasswordReset(email.trim());
       setSuccess("Password reset email sent. Check your inbox.");
     } catch (authError) {
-      setError(getAuthErrorMessage(authError, "Could not send the reset email."));
+      console.error("Password Reset Error:", authError);
+      setError(`Reset failed: [${authError.code || "unknown"}] ${authError.message}`);
     } finally {
       setSubmitting(false);
     }

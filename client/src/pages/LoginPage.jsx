@@ -23,7 +23,8 @@ function LoginPage() {
       await loginWithEmailPassword(email.trim(), password);
       navigate(location.state?.from?.pathname || "/app/dashboard", { replace: true });
     } catch (authError) {
-      setError(getAuthErrorMessage(authError, "Email login failed."));
+      console.error("Email Login Error:", authError);
+      setError(`Login failed: [${authError.code || "unknown"}] ${authError.message}`);
     } finally {
       setSubmittingEmail(false);
     }
@@ -36,7 +37,8 @@ function LoginPage() {
       await loginWithGoogle();
       navigate(location.state?.from?.pathname || "/app/dashboard", { replace: true });
     } catch (authError) {
-      setError(getAuthErrorMessage(authError, "Google sign-in failed."));
+      console.error("Google Login Error:", authError);
+      setError(`Google sign-in failed: [${authError.code || "unknown"}] ${authError.message}`);
     } finally {
       setSubmittingGoogle(false);
     }

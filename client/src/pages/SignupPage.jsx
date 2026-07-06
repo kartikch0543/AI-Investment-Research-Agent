@@ -31,7 +31,8 @@ function SignupPage() {
       });
       navigate("/app/dashboard", { replace: true });
     } catch (authError) {
-      setError(getAuthErrorMessage(authError, "Email sign-up failed."));
+      console.error("Email Signup Error:", authError);
+      setError(`Sign-up failed: [${authError.code || "unknown"}] ${authError.message}`);
     } finally {
       setSubmittingEmail(false);
     }
@@ -44,7 +45,8 @@ function SignupPage() {
       await loginWithGoogle();
       navigate("/app/dashboard", { replace: true });
     } catch (authError) {
-      setError(getAuthErrorMessage(authError, "Google sign-up failed."));
+      console.error("Google Signup Error:", authError);
+      setError(`Google sign-up failed: [${authError.code || "unknown"}] ${authError.message}`);
     } finally {
       setSubmittingGoogle(false);
     }
