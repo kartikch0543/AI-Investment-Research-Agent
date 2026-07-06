@@ -39,15 +39,15 @@ function SignupPage() {
   }
 
   async function handleGoogleSignup() {
+    setError("");
+    const loginPromise = loginWithGoogle();
+    setSubmittingGoogle(true);
     try {
-      setSubmittingGoogle(true);
-      setError("");
-      await loginWithGoogle();
+      await loginPromise;
       navigate("/app/dashboard", { replace: true });
     } catch (authError) {
       console.error("Google Signup Error:", authError);
       setError(`Google sign-up failed: [${authError.code || "unknown"}] ${authError.message}`);
-    } finally {
       setSubmittingGoogle(false);
     }
   }

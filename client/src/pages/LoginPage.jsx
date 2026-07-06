@@ -31,15 +31,15 @@ function LoginPage() {
   }
 
   async function handleGoogleLogin() {
+    setError("");
+    const loginPromise = loginWithGoogle();
+    setSubmittingGoogle(true);
     try {
-      setSubmittingGoogle(true);
-      setError("");
-      await loginWithGoogle();
+      await loginPromise;
       navigate(location.state?.from?.pathname || "/app/dashboard", { replace: true });
     } catch (authError) {
       console.error("Google Login Error:", authError);
       setError(`Google sign-in failed: [${authError.code || "unknown"}] ${authError.message}`);
-    } finally {
       setSubmittingGoogle(false);
     }
   }
