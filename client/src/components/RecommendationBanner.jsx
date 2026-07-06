@@ -4,27 +4,37 @@ const DECISION_CONFIG = {
   BUY: {
     label: "INVEST",
     badge: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-    accent: "bg-emerald-500"
+    accent: "bg-emerald-500",
+    textClass: "text-emerald-500",
+    horizon: "Medium-term (12–18 months)"
   },
   INVEST: {
     label: "INVEST",
     badge: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
-    accent: "bg-emerald-500"
+    accent: "bg-emerald-500",
+    textClass: "text-emerald-500",
+    horizon: "Medium-term (12–18 months)"
   },
   WATCHLIST: {
     label: "WATCHLIST",
     badge: "bg-amber-500/10 text-amber-500 border-amber-500/20",
-    accent: "bg-amber-500"
+    accent: "bg-amber-500",
+    textClass: "text-amber-500",
+    horizon: "Monitor 3–6 months"
   },
   PASS: {
-    label: "PASS",
+    label: "AVOID",
     badge: "bg-rose-500/10 text-rose-500 border-rose-500/20",
-    accent: "bg-rose-500"
+    accent: "bg-rose-500",
+    textClass: "text-rose-500",
+    horizon: "Not recommended"
   },
   AVOID: {
-    label: "PASS",
+    label: "AVOID",
     badge: "bg-rose-500/10 text-rose-500 border-rose-500/20",
-    accent: "bg-rose-500"
+    accent: "bg-rose-500",
+    textClass: "text-rose-500",
+    horizon: "Not recommended"
   }
 };
 
@@ -81,73 +91,87 @@ function RecommendationBanner({ decision, confidence, overallScore, reasoning, c
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-2xl border border-[var(--border-color)] bg-[var(--bg-surface)] p-6 relative overflow-hidden shadow-sm animate-fade-in-up"
+      className="rounded-2xl border border-[var(--border-color)] bg-[var(--bg-surface)] relative overflow-hidden shadow-sm"
     >
       {/* Accent indicator line */}
-      <div className={`absolute inset-y-0 left-0 w-[4px] ${config.accent}`} />
+      <div className={`absolute inset-y-0 left-0 w-1 ${config.accent}`} />
 
-      <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-        {/* Main Info */}
+      {/* Header row */}
+      <div className="pl-5 pr-6 pt-5 pb-4 flex flex-col lg:flex-row gap-5 items-start lg:items-center justify-between">
+        {/* Company identity */}
         <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className={`inline-flex rounded-lg border px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase ${config.badge}`}>
-              {config.label}
+          <div className="flex flex-wrap items-center gap-2.5 mb-3">
+            <span className={`inline-flex rounded-lg border px-3 py-1 text-xs font-bold tracking-widest uppercase ${config.badge}`}>
+              ● {config.label}
             </span>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
-              Executive Research Summary
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+              AI Executive Research Summary
             </span>
           </div>
 
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
-            {companyName} <span className="text-xl font-medium text-[var(--text-muted)]">({meta.ticker})</span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
+            {companyName}
+            <span className="ml-2 text-lg font-semibold text-[var(--text-muted)]">({meta.ticker})</span>
           </h2>
-          
-          <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[var(--text-secondary)]">
-            <span>Industry: <strong className="text-[var(--text-primary)]">{meta.industry}</strong></span>
-            <span className="text-[var(--border-color)]">•</span>
-            <span>Market Cap: <strong className="text-[var(--text-primary)]">{meta.cap}</strong></span>
-            <span className="text-[var(--border-color)]">•</span>
-            <span>Current Price: <strong className="text-[var(--text-primary)]">{meta.price}</strong></span>
+
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--text-secondary)]">
+            <span>
+              Industry:{" "}
+              <strong className="text-[var(--text-primary)] font-semibold">{meta.industry}</strong>
+            </span>
+            <span className="text-[var(--border-color-strong)]">/</span>
+            <span>
+              Market Cap:{" "}
+              <strong className="text-[var(--text-primary)] font-semibold">{meta.cap}</strong>
+            </span>
+            <span className="text-[var(--border-color-strong)]">/</span>
+            <span>
+              Price:{" "}
+              <strong className="text-[var(--text-primary)] font-semibold">{meta.price}</strong>
+            </span>
+            <span className="text-[var(--border-color-strong)]">/</span>
+            <span>
+              Horizon:{" "}
+              <strong className="text-[var(--text-primary)] font-semibold">{config.horizon}</strong>
+            </span>
           </div>
         </div>
 
-        {/* Confidence & ScoreBadges */}
-        <div className="flex flex-wrap gap-4 shrink-0">
-          <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] px-4 py-3 min-w-[130px] text-center">
-            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Overall AI Score</span>
-            <p className={`mt-1 text-2xl font-extrabold font-mono ${config.textClass || 'text-[var(--color-accent)]'}`}>
-              {overallScore}/100
+        {/* Score badges */}
+        <div className="flex flex-wrap gap-3 shrink-0">
+          <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] px-4 py-3 min-w-[120px] text-center">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-1">AI Score</span>
+            <p className={`text-2xl font-extrabold font-mono ${config.textClass}`}>
+              {overallScore}<span className="text-sm font-semibold text-[var(--text-muted)]">/100</span>
             </p>
           </div>
-          <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] px-4 py-3 min-w-[130px] text-center">
-            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Confidence</span>
-            <p className="mt-1 text-2xl font-extrabold font-mono text-[var(--text-primary)]">
-              {confidence}%
+          <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] px-4 py-3 min-w-[120px] text-center">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-1">Confidence</span>
+            <p className="text-2xl font-extrabold font-mono text-[var(--text-primary)]">
+              {confidence}<span className="text-sm font-semibold text-[var(--text-muted)]">%</span>
             </p>
           </div>
-          <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] px-4 py-3 min-w-[130px] text-center">
-            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Duration</span>
-            <p className="mt-1 text-xs font-semibold text-[var(--text-primary)] pt-1.5">
-              16.3s aggregate
-            </p>
+          <div className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] px-4 py-3 min-w-[120px] text-center">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-1">Analysis Time</span>
+            <p className="text-sm font-bold text-[var(--text-primary)] mt-1">~16s pipeline</p>
           </div>
         </div>
       </div>
 
-      {/* AI Executive Summary Paragraph */}
-      <div className="mt-6 pt-5 border-t border-[var(--border-color)]">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-2.5">
-          AI Consensus Thesis Summary
+      {/* AI Thesis */}
+      <div className="pl-5 pr-6 pb-4 pt-4 border-t border-[var(--border-color)]">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)] mb-2.5">
+          AI Consensus Investment Thesis
         </p>
-        <p className="text-sm leading-relaxed text-[var(--text-secondary)] font-medium max-w-4xl">
-          {paragraphReasoning || "No executive summary available."}
+        <p className="text-sm leading-[1.75] text-[var(--text-secondary)] max-w-4xl">
+          {paragraphReasoning || "No executive summary available from the research pipeline."}
         </p>
       </div>
 
-      {/* Footer Info */}
-      <div className="mt-4 pt-3 border-t border-[var(--border-color)]/60 flex items-center justify-between text-[10px] text-[var(--text-muted)] font-medium">
-        <span>Scoring weights: 40% Fundamentals · 20% Moat · 20% Sentiment · 20% Risk</span>
-        <span>Last Audit: {lastUpdated}</span>
+      {/* Footer */}
+      <div className="pl-5 pr-6 py-2.5 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]/50 flex flex-wrap items-center justify-between gap-3 text-[10px] text-[var(--text-muted)] font-medium">
+        <span>Scoring weights: 40% Fundamentals · 20% Competitive Moat · 20% Market Sentiment · 20% Risk</span>
+        <span>Report generated: {lastUpdated}</span>
       </div>
     </motion.section>
   );

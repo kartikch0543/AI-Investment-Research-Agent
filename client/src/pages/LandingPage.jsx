@@ -194,17 +194,7 @@ function LandingPage() {
               </a>
             </div>
 
-            {/* Social proof */}
-            <div className="mt-12 flex items-center justify-center gap-2 text-sm text-[var(--text-muted)]">
-              <div className="flex -space-x-1.5">
-                {["🤖","📊","🔍","📈","💡"].map((e,i) => (
-                  <div key={i} className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs">
-                    {e}
-                  </div>
-                ))}
-              </div>
-              <span>Built for AI Product Engineering internship showcase</span>
-            </div>
+
           </motion.div>
         </div>
       </section>

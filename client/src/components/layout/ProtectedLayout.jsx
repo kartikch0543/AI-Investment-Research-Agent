@@ -198,52 +198,54 @@ function ProtectedLayout() {
         )}
 
         {/* ─ Navigation ─ */}
-        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-5">
+        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-3">
           {NAV_ITEMS.map((group) => (
-            <div key={group.group} className="space-y-1">
+            <div key={group.group}>
               {!isCollapsed && (
-                <p className="px-2 mb-2 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
+                <p className="px-2 pt-1 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
                   {group.group}
                 </p>
               )}
-              {group.items.map((item) => {
-                const isActive = location.pathname === item.to;
-                const content = (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    className={`relative flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-sm font-medium transition-all duration-150 ${
-                      isActive
-                        ? "bg-[var(--color-accent-light)] text-[var(--color-accent)]"
-                        : "text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]"
-                    } ${isCollapsed ? "justify-center" : ""}`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="sidebar-active"
-                        className="absolute left-0 w-0.5 h-5 rounded-r-full bg-[var(--color-accent)]"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                    <span className={`shrink-0 ${isActive ? "text-[var(--color-accent)]" : "text-[var(--text-muted)] group-hover:text-[var(--text-primary)]"}`}>
-                      {item.icon}
-                    </span>
-                    {!isCollapsed && (
-                      <motion.span
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="truncate"
-                      >
-                        {item.label}
-                      </motion.span>
-                    )}
-                  </Link>
-                );
+              <div className="space-y-0.5">
+                {group.items.map((item) => {
+                  const isActive = location.pathname === item.to;
+                  const content = (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={`relative flex items-center gap-2.5 rounded-xl px-2.5 py-2.5 text-sm font-medium transition-all duration-150 ${
+                        isActive
+                          ? "bg-[var(--color-accent-light)] text-[var(--color-accent)]"
+                          : "text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]"
+                      } ${isCollapsed ? "justify-center" : ""}`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="sidebar-active"
+                          className="absolute left-0 w-0.5 h-5 rounded-r-full bg-[var(--color-accent)]"
+                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                      <span className={`shrink-0 ${isActive ? "text-[var(--color-accent)]" : "text-[var(--text-muted)] group-hover:text-[var(--text-primary)]"}`}>
+                        {item.icon}
+                      </span>
+                      {!isCollapsed && (
+                        <motion.span
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="truncate"
+                        >
+                          {item.label}
+                        </motion.span>
+                      )}
+                    </Link>
+                  );
 
-                return isCollapsed ? (
-                  <Tooltip key={item.to} label={item.label}>{content}</Tooltip>
-                ) : content;
-              })}
+                  return isCollapsed ? (
+                    <Tooltip key={item.to} label={item.label}>{content}</Tooltip>
+                  ) : content;
+                })}
+              </div>
             </div>
           ))}
         </nav>
