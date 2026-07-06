@@ -15,12 +15,13 @@ import SignupPage from "./pages/SignupPage";
 function App() {
   return (
     <Routes>
+      {/* Public landing — accessible to everyone */}
+      <Route path="/" element={<LandingPage />} />
+
       <Route element={<PublicOnlyRoute />}>
-        <Route path="/" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/welcome" element={<LandingPage />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>

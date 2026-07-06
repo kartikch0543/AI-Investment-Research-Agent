@@ -1,177 +1,422 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import ThemeToggle from "../components/theme/ThemeToggle";
-import GlassPanel from "../components/ui/GlassPanel";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useTheme, THEME_MODES } from "../context/ThemeContext";
+
+/* ── icons ──────────────────────────────────── */
+const SunIcon = () => (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="5"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+);
+const MoonIcon = () => (
+  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+  </svg>
+);
 
 const FEATURES = [
   {
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-      </svg>
-    ),
-    title: "7-Agent Research Pipeline",
-    desc: "Parallel AI agents analyze market context, financials, competitive moat, sentiment, and risk."
+    icon: "🤖",
+    title: "Multi-Agent AI",
+    desc: "7 specialized LangGraph agents work in parallel — each focused on a different research domain.",
+    color: "rgba(96,165,250,0.1)",
+    border: "rgba(96,165,250,0.2)"
   },
   {
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-      </svg>
-    ),
-    title: "Deterministic Scoring",
-    desc: "Transparent 0–100 scores across Financial Health, Sentiment, Moat, and Risk dimensions."
+    icon: "🔗",
+    title: "LangGraph Workflow",
+    desc: "Deterministic, orchestrated research pipeline with full auditability at every agent step.",
+    color: "rgba(52,211,153,0.1)",
+    border: "rgba(52,211,153,0.2)"
   },
   {
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-    title: "AI Copilot",
-    desc: "Ask follow-up questions about metrics, moats, and your active research in natural language."
+    icon: "📊",
+    title: "Financial Intelligence",
+    desc: "Revenue growth, margin analysis, debt ratios, and balance sheet evaluation in seconds.",
+    color: "rgba(251,191,36,0.1)",
+    border: "rgba(251,191,36,0.2)"
   },
   {
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-      </svg>
-    ),
-    title: "Secure & Private",
-    desc: "Firebase authentication, per-user data isolation, and encrypted research history."
+    icon: "💡",
+    title: "Explainable AI",
+    desc: "Every score includes transparent reasoning. No black-box decisions — understand the why.",
+    color: "rgba(167,139,250,0.1)",
+    border: "rgba(167,139,250,0.2)"
+  },
+  {
+    icon: "🏛️",
+    title: "Investment Committee",
+    desc: "Bull/bear case analysis, moat scoring, and conviction rating from a simulated committee.",
+    color: "rgba(251,113,133,0.1)",
+    border: "rgba(251,113,133,0.2)"
+  },
+  {
+    icon: "⚠️",
+    title: "Risk Analysis",
+    desc: "Probability × impact matrix with concrete mitigation strategies for each identified risk.",
+    color: "rgba(251,146,60,0.1)",
+    border: "rgba(251,146,60,0.2)"
   }
 ];
 
+const PIPELINE = [
+  { icon: "🔍", label: "Search Company", desc: "Identify ticker, sector, and business model" },
+  { icon: "📡", label: "Gather Market Data", desc: "Fetch financial statements and market context" },
+  { icon: "📈", label: "Financial Analysis", desc: "Revenue, margins, debt, growth trajectory" },
+  { icon: "⚠️", label: "Risk Analysis", desc: "Probability × impact risk matrix" },
+  { icon: "📰", label: "News Sentiment", desc: "Positive/negative media signal extraction" },
+  { icon: "🏰", label: "Moat Analysis", desc: "Competitive advantage and durability scoring" },
+  { icon: "🏛️", label: "Investment Committee", desc: "Bull/bear case synthesis and conviction" },
+  { icon: "✅", label: "Final Recommendation", desc: "BUY · WATCHLIST · AVOID with confidence score" }
+];
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07 } }
+};
+const item = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } }
+};
+
 function LandingPage() {
+  const { user } = useAuth();
+  const { themeMode, setTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleTheme = () =>
+    setTheme(themeMode === THEME_MODES.DARK ? THEME_MODES.LIGHT : THEME_MODES.DARK);
+
   return (
-    <main className="min-h-screen bg-[var(--bg-primary)] overflow-x-hidden">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 flex flex-col gap-12">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] overflow-x-hidden">
 
-        {/* NAV */}
-        <header className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-accent)] text-sm font-bold text-white dark:text-[var(--text-inverse)] shadow-md">
-              TI
+      {/* ── NAVBAR ─────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 border-b border-[var(--border-color)] bg-[var(--bg-surface)]/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] shadow-sm">
+              <span className="text-xs font-bold text-white">TI</span>
             </div>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--color-accent)]">TradeIntel</p>
-              <p className="text-xs text-[var(--text-muted)]">AI Investment Research</p>
-            </div>
-          </div>
+            <span className="text-sm font-semibold tracking-tight text-[var(--text-primary)]">TradeIntel AI</span>
+          </Link>
 
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <Link
-              to="/login"
-              className="rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-5 py-2.5 text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all"
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--text-secondary)]">
+            <a href="#features" className="hover:text-[var(--text-primary)] transition-colors">Features</a>
+            <a href="#how-it-works" className="hover:text-[var(--text-primary)] transition-colors">How it works</a>
+            <a
+              href="https://github.com/kartikch0543/AI-Investment-Research-Agent"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[var(--text-primary)] transition-colors"
             >
-              Sign in
-            </Link>
-          </div>
-        </header>
+              GitHub
+            </a>
+          </nav>
 
-        {/* HERO */}
-        <section className="text-center pt-8 pb-4">
+          {/* Right actions */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--border-color-strong)] transition-all"
+            >
+              {themeMode === THEME_MODES.DARK ? <SunIcon /> : <MoonIcon />}
+            </button>
+            {user ? (
+              <Link to="/app/dashboard" className="btn-primary text-sm h-9 px-4">
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="hidden sm:inline-flex items-center h-9 px-4 rounded-lg text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                >
+                  Sign in
+                </Link>
+                <Link to="/signup" className="btn-primary text-sm h-9 px-4">
+                  Start Free
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* ── HERO ───────────────────────────────────────── */}
+      <section className="relative pt-24 pb-20 px-6 text-center overflow-hidden">
+        {/* Ambient background */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[var(--color-accent-light)] blur-[100px] opacity-60" />
+          <div className="absolute top-1/3 -right-24 w-[300px] h-[300px] rounded-full bg-[var(--color-buy-bg)] blur-[80px] opacity-40" />
+        </div>
+
+        <div className="relative mx-auto max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-accent-medium)] bg-[var(--color-accent-light)] px-4 py-1.5 text-[11px] font-bold text-[var(--color-accent)] uppercase tracking-widest mb-6">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 mb-8 rounded-full border border-[var(--color-accent-medium)] bg-[var(--color-accent-light)] px-4 py-1.5 text-xs font-semibold text-[var(--color-accent)] uppercase tracking-widest">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
               Powered by LangGraph Multi-Agent AI
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--text-primary)] leading-[1.1] max-w-4xl mx-auto">
-              Investment research.{" "}
-              <span className="text-[var(--color-accent)]">AI-powered.</span>
-              <br />Decisively clear.
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.75rem] font-bold tracking-tight leading-[1.08] text-[var(--text-primary)]">
+              AI Investment Research,{" "}
+              <span className="text-[var(--color-accent)]">Driven by</span>
+              <br />
+              7 Specialized Agents
             </h1>
 
-            <p className="mt-6 text-base sm:text-lg leading-relaxed text-[var(--text-secondary)] max-w-2xl mx-auto">
-              TradeIntel analyzes any public company with 7 specialized AI agents — delivering structured research,
-              transparent scoring, and an explainable BUY / WATCHLIST / AVOID recommendation.
+            {/* Subtext */}
+            <p className="mt-6 text-lg leading-relaxed text-[var(--text-secondary)] max-w-2xl mx-auto">
+              TradeIntel analyzes any public company through a deterministic 7-agent pipeline —
+              delivering structured financial research, transparent scoring, and an explainable
+              BUY&nbsp;/&nbsp;WATCHLIST&nbsp;/&nbsp;AVOID recommendation.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                to="/signup"
-                className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-7 py-3.5 text-sm font-semibold text-white dark:text-[var(--text-inverse)] shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            {/* CTAs */}
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <Link to="/signup" className="btn-primary gap-2 text-base px-8 h-12">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                 </svg>
-                Start for Free
+                Start Research Free
               </Link>
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color-strong)] bg-[var(--bg-surface)] px-7 py-3.5 text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:-translate-y-0.5 transition-all"
-              >
-                Sign in to workspace
-              </Link>
+              <a href="#how-it-works" className="btn-ghost text-base px-8 h-12">
+                View Architecture →
+              </a>
+            </div>
+
+            {/* Social proof */}
+            <div className="mt-12 flex items-center justify-center gap-2 text-sm text-[var(--text-muted)]">
+              <div className="flex -space-x-1.5">
+                {["🤖","📊","🔍","📈","💡"].map((e,i) => (
+                  <div key={i} className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs">
+                    {e}
+                  </div>
+                ))}
+              </div>
+              <span>Built for AI Product Engineering internship showcase</span>
             </div>
           </motion.div>
-        </section>
+        </div>
+      </section>
 
-        {/* FEATURES */}
-        <section>
-          <div className="text-center mb-8">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">What's inside</p>
-            <h2 className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">Built for serious investors</h2>
+      {/* ── FEATURES ───────────────────────────────────── */}
+      <section id="features" className="py-24 px-6">
+        <div className="mx-auto max-w-7xl">
+          {/* Section header */}
+          <div className="text-center mb-16">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)] mb-3">
+              What's inside
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+              Built for serious investors
+            </h2>
+            <p className="mt-4 text-base text-[var(--text-secondary)] max-w-xl mx-auto">
+              Every component of TradeIntel is purpose-built — from data gathering to final verdict.
+            </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((f, i) => (
+          {/* 6-card grid */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-60px" }}
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {FEATURES.map((f) => (
               <motion.div
                 key={f.title}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.08, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="premium-panel rounded-2xl p-5 border border-[var(--border-color)] hover:border-[var(--color-accent)] hover:-translate-y-0.5 transition-all duration-200 group"
+                variants={item}
+                className="premium-panel p-6 group cursor-default"
+                style={{ borderColor: "var(--border-color)" }}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-accent-light)] text-[var(--color-accent)] mb-4 group-hover:scale-110 transition-transform">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl mb-5 transition-transform duration-200 group-hover:scale-110"
+                  style={{ background: f.color, border: `1px solid ${f.border}` }}
+                >
                   {f.icon}
                 </div>
-                <p className="text-sm font-semibold text-[var(--text-primary)]">{f.title}</p>
-                <p className="mt-1.5 text-xs text-[var(--text-muted)] leading-relaxed">{f.desc}</p>
+                <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2">{f.title}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{f.desc}</p>
               </motion.div>
             ))}
-          </div>
-        </section>
-
-        {/* PIPELINE STEPS */}
-        <GlassPanel className="relative overflow-hidden">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)] to-transparent opacity-30" />
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Pipeline</p>
-          <h2 className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">How TradeIntel works</h2>
-          <p className="mt-2 text-sm text-[var(--text-secondary)] max-w-xl">
-            Each research run executes a multi-stage pipeline coordinated by LangGraph.
-          </p>
-
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { step: "01", label: "Company Discovery", desc: "Identifies the company, ticker, and core business context." },
-              { step: "02", label: "Financial Analysis", desc: "Evaluates fundamentals: revenue, margins, debt, growth." },
-              { step: "03", label: "Market Sentiment", desc: "Analyzes news, headlines, and market perception signals." },
-              { step: "04", label: "Recommendation", desc: "Combines all signals into a transparent BUY / AVOID verdict." }
-            ].map(item => (
-              <div key={item.step} className="rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] p-4">
-                <p className="text-2xl font-bold text-[var(--color-accent)] opacity-60 mb-2">{item.step}</p>
-                <p className="text-sm font-semibold text-[var(--text-primary)]">{item.label}</p>
-                <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </GlassPanel>
-
-        {/* CTA FOOTER */}
-        <div className="text-center py-8 border-t border-[var(--border-color)]">
-          <p className="text-sm text-[var(--text-muted)]">
-            &copy; {new Date().getFullYear()} TradeIntel AI · Built with LangGraph, Firebase & React
-          </p>
+          </motion.div>
         </div>
-      </div>
-    </main>
+      </section>
+
+      {/* ── HOW IT WORKS (Pipeline) ─────────────────────── */}
+      <section id="how-it-works" className="py-24 px-6 bg-[var(--bg-secondary)]/60 border-y border-[var(--border-color)]">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center mb-16">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)] mb-3">
+              Architecture
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+              How TradeIntel works
+            </h2>
+            <p className="mt-4 text-base text-[var(--text-secondary)] max-w-xl mx-auto">
+              Each research run executes a multi-stage LangGraph pipeline. Every step is auditable, deterministic, and transparent.
+            </p>
+          </div>
+
+          {/* Pipeline steps */}
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-[27px] top-0 bottom-0 w-px bg-gradient-to-b from-[var(--color-accent)] via-[var(--border-color-strong)] to-transparent hidden sm:block" />
+
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
+              className="space-y-4"
+            >
+              {PIPELINE.map((step, i) => (
+                <motion.div
+                  key={step.label}
+                  variants={item}
+                  className="flex items-start gap-5"
+                >
+                  {/* Step number bubble */}
+                  <div className="relative shrink-0 flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--border-color-strong)] bg-[var(--bg-surface)] shadow-sm z-10 text-2xl">
+                    {step.icon}
+                    {i < PIPELINE.length - 1 && (
+                      <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[var(--text-muted)] text-[10px] font-bold hidden sm:block">↓</span>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] p-4 hover:border-[var(--border-color-strong)] transition-colors">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-semibold text-[var(--text-primary)]">{step.label}</p>
+                        <p className="text-sm text-[var(--text-secondary)] mt-0.5">{step.desc}</p>
+                      </div>
+                      <span className="shrink-0 text-xs font-bold text-[var(--text-muted)] bg-[var(--bg-secondary)] px-2 py-1 rounded-lg">
+                        Step {i + 1}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── BENEFITS / STATS ────────────────────────────── */}
+      <section className="py-24 px-6">
+        <div className="mx-auto max-w-5xl">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="grid gap-px sm:grid-cols-3 rounded-2xl overflow-hidden border border-[var(--border-color)] bg-[var(--border-color)]"
+          >
+            {[
+              { stat: "7", label: "Specialized AI Agents", sub: "Each with a dedicated research role" },
+              { stat: "100", label: "Transparent Score", sub: "Explained across 4 dimensions" },
+              { stat: "< 30s", label: "Research Time", sub: "Full company analysis on demand" }
+            ].map((s) => (
+              <motion.div
+                key={s.stat}
+                variants={item}
+                className="bg-[var(--bg-surface)] p-8 text-center"
+              >
+                <p className="text-4xl font-bold text-[var(--color-accent)] mb-2">{s.stat}</p>
+                <p className="text-base font-semibold text-[var(--text-primary)]">{s.label}</p>
+                <p className="text-sm text-[var(--text-secondary)] mt-1">{s.sub}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── CTA BANNER ──────────────────────────────────── */}
+      <section className="py-24 px-6">
+        <div className="mx-auto max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16,1,0.3,1] }}
+            className="relative rounded-3xl border border-[var(--color-accent-medium)] bg-[var(--color-accent-light)] p-12 text-center overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-accent-light)] to-transparent" />
+            <div className="relative">
+              <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-4">
+                Ready to research smarter?
+              </h2>
+              <p className="text-base text-[var(--text-secondary)] mb-8 max-w-lg mx-auto">
+                Start analyzing public companies with 7 AI agents in under 30 seconds.
+                No credit card required.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Link to="/signup" className="btn-primary text-base h-12 px-8">
+                  Get Started Free
+                </Link>
+                <Link to="/login" className="btn-ghost text-base h-12 px-8">
+                  Sign in
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ──────────────────────────────────────── */}
+      <footer className="border-t border-[var(--border-color)] bg-[var(--bg-surface)]">
+        <div className="mx-auto max-w-7xl px-6 py-12">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            {/* Brand */}
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--color-accent)]">
+                <span className="text-[10px] font-bold text-white">TI</span>
+              </div>
+              <span className="text-sm font-semibold text-[var(--text-primary)]">TradeIntel AI</span>
+            </div>
+
+            {/* Links */}
+            <nav className="flex items-center gap-6 text-sm text-[var(--text-muted)]">
+              <a
+                href="https://github.com/kartikch0543/AI-Investment-Research-Agent"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[var(--text-primary)] transition-colors"
+              >
+                GitHub
+              </a>
+              <Link to="/login" className="hover:text-[var(--text-primary)] transition-colors">Sign In</Link>
+              <Link to="/signup" className="hover:text-[var(--text-primary)] transition-colors">Sign Up</Link>
+            </nav>
+
+            {/* Theme + copyright */}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleTheme}
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-color)] bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
+              >
+                {themeMode === THEME_MODES.DARK ? <SunIcon /> : <MoonIcon />}
+              </button>
+              <p className="text-xs text-[var(--text-muted)]">
+                © {new Date().getFullYear()} TradeIntel AI
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
 

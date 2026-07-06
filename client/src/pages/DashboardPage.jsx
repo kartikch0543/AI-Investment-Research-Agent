@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import SearchForm from "../components/SearchForm";
 import ProgressTimeline from "../components/ProgressTimeline";
@@ -42,34 +43,43 @@ function DashboardPage() {
   const displayName = user?.displayName?.split(" ")[0] || user?.email?.split("@")[0] || "Investor";
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Hero Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">TradeIntel AI</p>
-          <h1 className="mt-1 text-2xl font-semibold text-[var(--text-primary)]">
-            {greeting()}, <span className="text-[var(--color-accent)]">{displayName}</span>
+    <div className="flex flex-col gap-8">
+
+      {/* ── Page header ──────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-2 border-b border-[var(--border-color)]">
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.16,1,0.3,1] }}
+        >
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)] mb-1.5">
+            TradeIntel AI · Research Workspace
+          </p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+            {greeting()},{" "}
+            <span className="text-[var(--color-accent)]">{displayName}</span>
           </h1>
           <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            Your AI-powered investment research workspace
+            Analyze any public company with 7 specialized AI agents.
           </p>
-        </div>
+        </motion.div>
+
         <Link
           to="/app/history"
-          className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 py-2.5 text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all whitespace-nowrap"
+          className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 py-2.5 text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all whitespace-nowrap self-start sm:self-auto shadow-sm"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          View History
+          Research History
         </Link>
       </div>
 
-      {/* Quick Stats */}
+      {/* ── Quick stats ───────────────────────────────── */}
       <QuickStats result={result} historyCount={historyItems.length} loading={loading} />
 
-      {/* Research Input + Progress */}
-      <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr] items-stretch">
+      {/* ── Search + Progress grid ────────────────────── */}
+      <section className="grid gap-5 lg:grid-cols-[1.4fr_0.6fr] items-stretch">
         <SearchForm
           companyName={companyName}
           loading={loading}
@@ -85,10 +95,15 @@ function DashboardPage() {
         />
       </section>
 
-      {/* Result Sections — Document-like continuous flow */}
+      {/* ── Report flow ───────────────────────────────── */}
       {result ? (
-        <div className="flex flex-col gap-6">
-          {/* 1. Executive Summary Hero Banner */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col gap-6"
+        >
+          {/* 1 · Executive Summary */}
           <RecommendationBanner
             decision={result.decision}
             confidence={result.confidence}
@@ -97,33 +112,33 @@ function DashboardPage() {
             companyName={result.companyName}
           />
 
-          {/* 2. Score Breakdown (Math & Chart) */}
+          {/* 2 · Score Breakdown */}
           <ScoreBreakdownSection scoreBreakdown={result.scoreBreakdown} />
 
-          {/* 3. Company Metrics Grid */}
+          {/* 3 · Company Metrics */}
           <CompanyMetricsSnapshot result={result} />
 
-          {/* 4. SWOT Grid Analysis */}
+          {/* 4 · SWOT */}
           <SwotAnalysis result={result} />
 
-          {/* 5. News Sentiment Feed & Risk Mitigations */}
-          <section className="grid gap-6 lg:grid-cols-2 items-stretch">
+          {/* 5 · News + Risk side-by-side */}
+          <section className="grid gap-5 lg:grid-cols-2 items-stretch">
             <NewsTimelinePanel result={result} />
             <RiskMatrixTable result={result} />
           </section>
 
-          {/* 6. Investment Thesis board */}
+          {/* 6 · Investment Thesis */}
           <InvestmentThesisPanel result={result} />
 
-          {/* 7. Collapsible Agent Deep-Dives & History */}
-          <section className="grid gap-6 lg:grid-cols-[1.8fr_1fr] items-stretch">
+          {/* 7 · Agent reports + history */}
+          <section className="grid gap-5 lg:grid-cols-[1.75fr_1fr] items-stretch">
             <DetailedAgentAccordion result={result} />
             <SearchHistoryPanel compact className="h-full" />
           </section>
 
-          {/* 8. Final Verdict Callout Card */}
+          {/* 8 · Final Verdict */}
           <FinalVerdictCard result={result} />
-        </div>
+        </motion.div>
       ) : (
         <ResearchEmptyState />
       )}
