@@ -540,7 +540,7 @@ function ChatbotDrawer({ isOpen, onClose, onOpen }) {
     setMessages(prev => [...prev, userMsg]);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/chatbot", {
+      const res = await axios.post(((import.meta.env.VITE_API_URL || "http://localhost:5000") + "/api/chatbot"), {
         message: text,
         history: messages.slice(-10), // Send last 10 for context, not full history
         researchContext
