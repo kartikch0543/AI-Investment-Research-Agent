@@ -12,12 +12,12 @@ function getDecisionStyle(decision) {
   return DECISION_STYLES[decision] || DECISION_STYLES.AVOID;
 }
 
-function SearchHistoryPanel({ compact = false }) {
+function SearchHistoryPanel({ compact = false, className = "" }) {
   const { historyItems } = useSearchHistory();
   const visibleItems = compact ? historyItems.slice(0, 5) : historyItems;
 
   return (
-    <GlassPanel>
+    <GlassPanel className={className}>
       <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research History</p>
       <h2 className="mt-1.5 text-xl font-semibold text-[var(--text-primary)]">Recent Analyses</h2>
 

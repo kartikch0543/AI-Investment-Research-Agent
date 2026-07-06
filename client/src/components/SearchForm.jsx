@@ -2,21 +2,23 @@ import GlassPanel from "./ui/GlassPanel";
 
 function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit }) {
   return (
-    <GlassPanel className="relative overflow-hidden">
+    <GlassPanel className="relative overflow-hidden h-full flex flex-col justify-between">
       {/* Subtle background glow */}
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-accent-light)] to-transparent pointer-events-none" />
 
-      <div className="relative">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Input</p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
-          Analyze any public company
-        </h2>
-        <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--text-secondary)]">
-          Our 7-agent AI pipeline gathers market intelligence, analyzes financials, assesses competitive moat,
-          and returns a structured investment recommendation.
-        </p>
+      <div className="relative flex-1 flex flex-col justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Input</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
+            Analyze any public company
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--text-secondary)]">
+            Our 7-agent AI pipeline gathers market intelligence, analyzes financials, assesses competitive moat,
+            and returns a structured investment recommendation.
+          </p>
+        </div>
 
-        <form className="mt-5 flex flex-col gap-2 sm:flex-row" onSubmit={onSubmit}>
+        <form className="mt-6 flex flex-col gap-2 sm:flex-row" onSubmit={onSubmit}>
           <div className="relative flex-1">
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

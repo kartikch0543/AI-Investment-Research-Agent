@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 
 import SearchForm from "../components/SearchForm";
 import ProgressTimeline from "../components/ProgressTimeline";
-import ScoreOverview from "../components/ScoreOverview";
-import ResearchCard from "../components/ResearchCard";
 import RecommendationBanner from "../components/RecommendationBanner";
-import SentimentPanel from "../components/SentimentPanel";
-import RiskPanel from "../components/RiskPanel";
+import ScoreBreakdownSection from "../components/ScoreBreakdownSection";
+import CompanyMetricsSnapshot from "../components/CompanyMetricsSnapshot";
+import SwotAnalysis from "../components/SwotAnalysis";
+import NewsTimelinePanel from "../components/NewsTimelinePanel";
+import RiskMatrixTable from "../components/RiskMatrixTable";
+import InvestmentThesisPanel from "../components/InvestmentThesisPanel";
+import DetailedAgentAccordion from "../components/DetailedAgentAccordion";
+import FinalVerdictCard from "../components/FinalVerdictCard";
 import SearchHistoryPanel from "../components/SearchHistoryPanel";
-import CompanySnapshot from "../components/CompanySnapshot";
-import ScoreBreakdownChart from "../charts/ScoreBreakdownChart";
 import QuickStats from "../components/QuickStats";
 import ResearchEmptyState from "../components/ResearchEmptyState";
 import { useResearch } from "../hooks/useResearch";
@@ -67,7 +69,7 @@ function DashboardPage() {
       <QuickStats result={result} historyCount={historyItems.length} loading={loading} />
 
       {/* Research Input + Progress */}
-      <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr] items-start">
+      <section className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr] items-stretch">
         <SearchForm
           companyName={companyName}
           loading={loading}
@@ -83,49 +85,45 @@ function DashboardPage() {
         />
       </section>
 
-      {/* Result Sections */}
+      {/* Result Sections — Document-like continuous flow */}
       {result ? (
-        <>
-          {/* Recommendation Banner — Full Width */}
+        <div className="flex flex-col gap-6">
+          {/* 1. Executive Summary Hero Banner */}
           <RecommendationBanner
             decision={result.decision}
             confidence={result.confidence}
             overallScore={result.overallScore}
             reasoning={result.reasoning}
+            companyName={result.companyName}
           />
 
-          {/* Score + Company + History */}
-          <section className="grid gap-6 xl:grid-cols-[1fr_1fr_0.85fr] items-start">
-            <ScoreOverview result={result} />
-            <CompanySnapshot result={result} />
-            <SearchHistoryPanel compact />
+          {/* 2. Score Breakdown (Math & Chart) */}
+          <ScoreBreakdownSection scoreBreakdown={result.scoreBreakdown} />
+
+          {/* 3. Company Metrics Grid */}
+          <CompanyMetricsSnapshot result={result} />
+
+          {/* 4. SWOT Grid Analysis */}
+          <SwotAnalysis result={result} />
+
+          {/* 5. News Sentiment Feed & Risk Mitigations */}
+          <section className="grid gap-6 lg:grid-cols-2 items-stretch">
+            <NewsTimelinePanel result={result} />
+            <RiskMatrixTable result={result} />
           </section>
 
-          {/* Chart + Financial Summary */}
-          <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr] items-start">
-            <ScoreBreakdownChart scoreBreakdown={result.scoreBreakdown} />
-            <ResearchCard
-              title="Financial Summary"
-              subtitle="Core business performance"
-              items={result.financialSummary.strengths || []}
-              secondaryItems={result.financialSummary.weaknesses || []}
-              summary={result.financialSummary.summary}
-            />
+          {/* 6. Investment Thesis board */}
+          <InvestmentThesisPanel result={result} />
+
+          {/* 7. Collapsible Agent Deep-Dives & History */}
+          <section className="grid gap-6 lg:grid-cols-[1.8fr_1fr] items-stretch">
+            <DetailedAgentAccordion result={result} />
+            <SearchHistoryPanel compact className="h-full" />
           </section>
 
-          {/* Sentiment + Risk + Competitive Moat */}
-          <section className="grid gap-6 xl:grid-cols-3 items-start">
-            <SentimentPanel sentiment={result.sentiment} />
-            <RiskPanel risks={result.risks} />
-            <ResearchCard
-              title="Competitive Advantage"
-              subtitle="Business quality & moat"
-              items={result.moat.strengths || []}
-              secondaryItems={result.moat.weaknesses || []}
-              summary={result.moat.summary}
-            />
-          </section>
-        </>
+          {/* 8. Final Verdict Callout Card */}
+          <FinalVerdictCard result={result} />
+        </div>
       ) : (
         <ResearchEmptyState />
       )}

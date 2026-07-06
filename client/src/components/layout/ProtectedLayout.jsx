@@ -99,7 +99,7 @@ function ProtectedLayout() {
       {/* Sidebar - Desktop and Mobile */}
       <aside
         className={`fixed inset-y-0 left-0 z-35 flex flex-col border-r border-[var(--border-color)] bg-[var(--bg-surface)] transition-all duration-300 ease-in-out lg:sticky lg:z-30 h-screen shrink-0
-          ${isCollapsed ? "w-20" : "w-64"}
+          ${isCollapsed ? "w-20" : "w-56"}
           ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         {/* Sidebar Header */}
