@@ -7,10 +7,15 @@ const { createSuccessResponse } = require("../utils/apiResponse");
 const createResearch = asyncHandler(async (request, response) => {
   const validatedInput = validateResearchRequest(request.body);
   const result = await runResearch(validatedInput.companyName);
-  await saveResearchHistoryItem({
-    firebaseUid: validatedInput.firebaseUid,
-    result
-  });
+  
+  try {
+    await saveResearchHistoryItem({
+      firebaseUid: validatedInput.firebaseUid,
+      result
+    });
+  } catch (dbError) {
+    console.error("Database connection failed while saving research history:", dbError.message);
+  }
 
   response.status(200).json(
     createSuccessResponse(result, "Research completed successfully")
