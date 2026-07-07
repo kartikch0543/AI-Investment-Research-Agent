@@ -36,19 +36,19 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
           <button
             type="submit"
             disabled={loading || !companyName.trim()}
-            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap"
+            className="h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2.5 whitespace-nowrap px-7 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 border border-blue-500/20"
           >
             {loading ? (
               <>
-                <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <svg className="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Researching...
+                <span>Researching...</span>
               </>
             ) : (
               <>
-                Research
+                <span>Research Company</span>
               </>
             )}
           </button>

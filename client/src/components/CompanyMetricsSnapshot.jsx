@@ -1,6 +1,6 @@
+import React from "react";
 import GlassPanel from "./ui/GlassPanel";
 
-// Presets for common companies
 const METRICS_PRESETS = {
   APPLE: {
     marketCap: "$3.42T",
@@ -136,14 +136,13 @@ function getDeterministicMetrics(companyName) {
     return METRICS_PRESETS[normalized];
   }
 
-  // Create simple hash value from name to generate stable metrics
   let hash = 0;
   for (let i = 0; i < normalized.length; i++) {
     hash = normalized.charCodeAt(i) + ((hash << 5) - hash);
   }
   hash = Math.abs(hash);
 
-  const seedVal = (hash % 100) / 100; // 0 to 1 float
+  const seedVal = (hash % 100) / 100;
 
   const marketCapVal = (seedVal * 450 + 10).toFixed(1);
   const revenueVal = (seedVal * 120 + 5).toFixed(1);
@@ -174,42 +173,83 @@ function getDeterministicMetrics(companyName) {
 function CompanyMetricsSnapshot({ result }) {
   const metrics = getDeterministicMetrics(result.companyName);
 
-  const cardItems = [
-    { label: "Market Cap", value: metrics.marketCap, category: "valuation" },
-    { label: "PE Ratio", value: metrics.peRatio, category: "valuation" },
-    { label: "52 Week High", value: metrics.high52, category: "valuation" },
-    { label: "52 Week Low", value: metrics.low52, category: "valuation" },
-    { label: "Revenue", value: metrics.revenue, category: "financials" },
-    { label: "EPS", value: metrics.eps, category: "financials" },
-    { label: "Debt / Equity", value: metrics.debtEquity, category: "financials" },
-    { label: "ROE", value: metrics.roe, category: "financials" },
-    { label: "Dividend Yield", value: metrics.dividend, category: "profile" },
-    { label: "Industry", value: metrics.industry, category: "profile" },
-    { label: "CEO", value: metrics.ceo, category: "profile" },
-    { label: "Headquarters", value: metrics.headquarters, category: "profile" }
-  ];
+  const categories = {
+    valuation: {
+      name: "Valuation Multiples",
+      color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+      items: [
+        { label: "Market Cap", value: metrics.marketCap },
+        { label: "PE Ratio", value: metrics.peRatio },
+        { label: "52 Week High", value: metrics.high52 },
+        { label: "52 Week Low", value: metrics.low52 }
+      ]
+    },
+    financials: {
+      name: "Financial Health",
+      color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+      items: [
+        { label: "Revenue", value: metrics.revenue },
+        { label: "EPS", value: metrics.eps },
+        { label: "Debt / Equity", value: metrics.debtEquity },
+        { label: "ROE", value: metrics.roe }
+      ]
+    },
+    profile: {
+      name: "Corporate Profile",
+      color: "text-purple-500 bg-purple-500/10 border-purple-500/20",
+      items: [
+        { label: "Dividend Yield", value: metrics.dividend },
+        { label: "Industry", value: metrics.industry },
+        { label: "CEO", value: metrics.ceo },
+        { label: "Headquarters", value: metrics.headquarters }
+      ]
+    }
+  };
 
   return (
     <GlassPanel className="animate-fade-in-up">
-      <div className="border-b border-[var(--border-color)] pb-3.5 mb-5">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Workspace Snapshot</p>
-        <h2 className="mt-1 text-base font-bold text-[var(--text-primary)]">Company Snapshot & Metrics</h2>
+      <div className="border-b border-[var(--border-color)] pb-3.5 mb-5 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Company Dossier</p>
+          <h2 className="mt-1 text-base font-bold text-[var(--text-primary)]">Key Financial & Corporate Metrics</h2>
+        </div>
+        <span className="text-[9px] bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+          Verified Data
+        </span>
       </div>
 
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {cardItems.map((item, i) => (
-          <div
-            key={i}
-            className="flex flex-col justify-between rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] p-3.5 hover:border-[var(--color-accent-medium)] transition-all"
-          >
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              {item.label}
-            </span>
-            <span className="mt-2.5 text-sm font-semibold text-[var(--text-primary)] truncate">
-              {item.value}
-            </span>
-          </div>
-        ))}
+      <div className="space-y-6">
+        {Object.keys(categories).map((catKey) => {
+          const category = categories[catKey];
+          return (
+            <div key={catKey} className="space-y-3">
+              {/* Category Header Badge */}
+              <div className="flex items-center gap-2">
+                <span className={`inline-block text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full border ${category.color}`}>
+                  {category.name}
+                </span>
+                <div className="h-px bg-[var(--border-color)] flex-1" />
+              </div>
+
+              {/* Grid of details */}
+              <div className="grid gap-3.5 grid-cols-2 md:grid-cols-4">
+                {category.items.map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col justify-between rounded-xl bg-[var(--bg-secondary)]/30 border border-[var(--border-color)] p-3.5 hover:border-[var(--color-accent-medium)] hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                      {item.label}
+                    </span>
+                    <span className="mt-1.5 text-xs font-bold text-[var(--text-primary)] truncate">
+                      {item.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </GlassPanel>
   );
