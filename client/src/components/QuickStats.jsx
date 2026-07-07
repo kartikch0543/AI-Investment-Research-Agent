@@ -108,7 +108,7 @@ function QuickStats({ result, historyCount, loading }) {
       value: wsStatus,
       valueCls: wsSty.cls,
       hint: loading ? "AI research pipeline is active." : result ? "Results are ready to review." : "Search a company to begin.",
-      badge: { text: wsStatus, ...wsSty, pulse: wsStatus === "Running" },
+      badge: { text: wsStatus === "Ready" ? "System Live" : wsStatus === "Running" ? "Active" : "Standby", ...wsSty, pulse: wsStatus === "Running" },
     },
     {
       label: "AI Recommendation",
@@ -122,7 +122,7 @@ function QuickStats({ result, historyCount, loading }) {
       hint: result
         ? `Confidence: ${result.confidence}% · Score: ${result.overallScore}/100`
         : "Run a company analysis to generate.",
-      badge: result ? { text: decSty.text, ...decSty, pulse: false } : null,
+      badge: result ? { text: "Consensus", ...decSty, pulse: false } : null,
     },
     {
       label: "Research History",

@@ -96,18 +96,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Ensure all text in dark mode is legible */
-:root.dark * {
-  color: inherit;
-}
-:root.dark p,
-:root.dark span:not([class*="text-"]),
-:root.dark li,
-:root.dark td,
-:root.dark th,
-:root.dark label {
-  color: inherit;
-}
+
 
 body::before {
   content: "";

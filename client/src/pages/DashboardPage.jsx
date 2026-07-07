@@ -57,7 +57,7 @@ function DashboardPage() {
           </p>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[var(--text-primary)] leading-tight">
             {greeting()},{" "}
-            <span className="bg-gradient-to-r from-[var(--color-accent)] to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-[var(--color-accent)]">
               {displayName}
             </span>
           </h1>

@@ -48,7 +48,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
               </>
             ) : (
               <>
-                <span>Research Company</span>
+                <span>Research</span>
               </>
             )}
           </button>
