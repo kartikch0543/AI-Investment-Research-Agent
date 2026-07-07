@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { runResearchRequest } from "../services/researchService";
 import { useAuth } from "../context/AuthContext";
@@ -16,10 +16,24 @@ const researchStages = [
 
 export function useResearch() {
   const [companyName, setCompanyName] = useState("");
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(() => {
+    const saved = sessionStorage.getItem("active-research-result");
+    return saved ? JSON.parse(saved) : null;
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeStage, setActiveStage] = useState(-1);
+
+  useEffect(() => {
+    const handleChanged = (e) => {
+      setResult(e.detail);
+      if (e.detail && e.detail.companyName) {
+        setCompanyName(e.detail.companyName);
+      }
+    };
+    window.addEventListener("active-research-changed", handleChanged);
+    return () => window.removeEventListener("active-research-changed", handleChanged);
+  }, []);
 
   const { addHistoryItem } = useSearchHistory();
   const { user } = useAuth();
@@ -67,7 +81,8 @@ export function useResearch() {
         decision: response.decision,
         overallScore: response.overallScore,
         confidence: response.confidence,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        jsonReport: response
       });
     } catch (requestError) {
       setError(

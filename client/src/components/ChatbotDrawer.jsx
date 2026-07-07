@@ -207,7 +207,7 @@ function renderMarkdownLine(line, i) {
     const content = line.replace(/^[\s]*[*-]\s/, "");
     return (
       <div key={i} className="flex items-start gap-2 text-xs text-[var(--text-secondary)] my-1">
-        <span className="text-[var(--color-accent)] mt-0.5 shrink-0 font-bold">•</span>
+        <span className="text-[var(--color-accent)] mt-1.5 shrink-0 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]"></span>
         <span dangerouslySetInnerHTML={{ __html: applyInlineMarkdown(content) }} />
       </div>
     );
@@ -411,14 +411,14 @@ function EmptyState({ onSend, researchContext }) {
 
   const suggestions = company
     ? [
-        { icon: "📊", label: `Why is ${company} rated ${researchContext?.decision || "this way"}?`, query: `Why is ${company} rated ${researchContext?.decision}? Explain the key factors.` },
-        { icon: "⚠️", label: `What are the main risks for ${company}?`, query: `What are the primary risk factors identified for ${company}?` },
-        { icon: "💰", label: `Summarize ${company}'s financial health`, query: `Give me a clear summary of ${company}'s financial health and key metrics.` },
+        { icon: "📊", label: `Why was ${company} rated ${researchContext?.decision || "Invest"}?`, query: `Why was ${company} rated ${researchContext?.decision || "Invest"}? Explain the key drivers and agent scores.` },
+        { icon: "⚠️", label: "What are the biggest risks?", query: `What are the biggest risk factors and challenges identified for ${company}?` },
+        { icon: "📈", label: "What drove the sentiment score?", query: `Analyze the news and market sentiment data that drove the sentiment score for ${company}.` }
       ]
     : [
-        { icon: "📐", label: "What is Price-to-Earnings (PE) Ratio?", query: "Explain the PE Ratio — definition, formula, and how to interpret it for stock analysis." },
-        { icon: "🏰", label: "What is a competitive moat?", query: "What is a competitive moat in investing? Give me examples and why it matters." },
-        { icon: "🔍", label: "How does TradeIntel evaluate stocks?", query: "How does the TradeIntel multi-agent pipeline evaluate and score a company?" },
+        { icon: "🔍", label: "Explain PE Ratio", query: "Explain what the Price-to-Earnings (PE) Ratio is, its formula, and how investors interpret it." },
+        { icon: "🛡️", label: "What is a competitive moat?", query: "What is a competitive moat in investing? Give me some key examples and why it matters." },
+        { icon: "🤖", label: "How does TradeIntel evaluate stocks?", query: "How does the multi-agent AI pipeline analyze and rate stocks?" }
       ];
 
   return (

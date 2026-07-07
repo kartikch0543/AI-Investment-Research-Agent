@@ -1,4 +1,9 @@
-import React from "react";
+const fs = require('fs');
+const path = require('path');
+
+const targetPath = path.join(__dirname, '..', 'client', 'src', 'charts', 'ScoreBreakdownChart.jsx');
+
+const code = `import React from "react";
 import {
   BarChart,
   Bar,
@@ -115,3 +120,7 @@ function ScoreBreakdownChart({ scoreBreakdown }) {
 }
 
 export default ScoreBreakdownChart;
+`;
+
+fs.writeFileSync(targetPath, code, 'utf8');
+console.log("Rewrote ScoreBreakdownChart.jsx successfully.");

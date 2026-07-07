@@ -1,4 +1,9 @@
-import React from "react";
+const fs = require('fs');
+const path = require('path');
+
+const targetPath = path.join(__dirname, '..', 'client', 'src', 'components', 'RecommendationBanner.jsx');
+
+const code = `import React from "react";
 import { motion } from "framer-motion";
 
 const DECISION_CONFIG = {
@@ -50,9 +55,9 @@ function RecommendationBanner({ decision, confidence, overallScore, reasoning, c
 
   // Clean bullet points if any
   const paragraphReasoning = (reasoning || "")
-    .replace(/^[-•*]\s+/gm, "")
-    .replace(/\n[-•*]/g, " ")
-    .replace(/\n+/g, " ")
+    .replace(/^[-•*]\\s+/gm, "")
+    .replace(/\\n[-•*]/g, " ")
+    .replace(/\\n+/g, " ")
     .trim();
 
   // Fake some meta values if not provided
@@ -148,3 +153,7 @@ function RecommendationBanner({ decision, confidence, overallScore, reasoning, c
 }
 
 export default RecommendationBanner;
+`;
+
+fs.writeFileSync(targetPath, code, 'utf8');
+console.log("Rewrote RecommendationBanner.jsx successfully.");

@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+const fs = require('fs');
+const path = require('path');
+
+const targetPath = path.join(__dirname, '..', 'client', 'src', 'pages', 'HistoryPage.jsx');
+
+const code = `import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSearchHistory } from "../context/SearchHistoryContext";
 import { formatDateTime } from "../utils/formatters";
@@ -195,7 +200,7 @@ function HistoryPage() {
             {processedItems.map((item, index) => {
               const style = getDecisionStyle(item.decision);
               const summaryText = item.jsonReport?.reasoning || "No thesis statement saved for this analysis.";
-              const displaySummary = summaryText.replace(/^[-•*]s+/gm, "").slice(0, 160) + (summaryText.length > 160 ? "..." : "");
+              const displaySummary = summaryText.replace(/^[-•*]\s+/gm, "").slice(0, 160) + (summaryText.length > 160 ? "..." : "");
               const cardKey = item.companyName + "-" + item.createdAt + "-" + index;
 
               return (
@@ -267,3 +272,7 @@ function HistoryPage() {
 }
 
 export default HistoryPage;
+`;
+
+fs.writeFileSync(targetPath, code, 'utf8');
+console.log("Rewrote HistoryPage.jsx successfully.");

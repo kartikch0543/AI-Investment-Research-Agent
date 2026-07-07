@@ -18,7 +18,7 @@ const FEATURE_TILES = [
       </svg>
     ),
     title: "Deterministic Scoring",
-    desc: "Transparent 0–100 scoring across financial health, sentiment, moat, and risk dimensions."
+    desc: "Transparent 0-100 scoring across financial health, sentiment, moat, and risk dimensions."
   },
   {
     icon: (

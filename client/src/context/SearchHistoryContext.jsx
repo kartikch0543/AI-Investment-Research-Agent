@@ -20,7 +20,8 @@ export function SearchHistoryProvider({ children }) {
               decision: item.decision,
               overallScore: item.overallScore,
               confidence: item.confidence,
-              createdAt: item.createdAt
+              createdAt: item.createdAt,
+              jsonReport: item.jsonReport
             }));
             setHistoryItems(formatted);
             return;
@@ -47,6 +48,17 @@ export function SearchHistoryProvider({ children }) {
     }
   }, [historyItems]);
 
+  function deleteHistoryItem(companyName, createdAt) {
+    setHistoryItems((currentItems) => {
+      const updated = currentItems.filter(
+        (existing) =>
+          !(existing.companyName === companyName && existing.createdAt === createdAt)
+      );
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
+  }
+
   function addHistoryItem(item) {
     setHistoryItems((currentItems) => {
       const exists = currentItems.some(
@@ -63,7 +75,8 @@ export function SearchHistoryProvider({ children }) {
     <SearchHistoryContext.Provider
       value={{
         historyItems,
-        addHistoryItem
+        addHistoryItem,
+        deleteHistoryItem
       }}
     >
       {children}
