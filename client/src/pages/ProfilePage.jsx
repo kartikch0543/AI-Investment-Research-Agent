@@ -138,7 +138,7 @@ function ProfilePage() {
               <button
                 type="submit"
                 disabled={profileLoading}
-                className="rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-5 py-3 text-sm font-semibold text-white dark:text-[var(--text-inverse)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
+                className="rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-5 py-3 text-sm font-semibold text-white text-white hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {profileLoading ? "Saving..." : "Save profile"}
               </button>

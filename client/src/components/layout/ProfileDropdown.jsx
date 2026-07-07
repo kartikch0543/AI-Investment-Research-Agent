@@ -49,7 +49,7 @@ function ProfileDropdown() {
             className="h-8 w-8 rounded-lg object-cover"
           />
         ) : (
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] text-xs font-bold text-white dark:text-[var(--text-inverse)]">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-accent)] text-xs font-bold text-white text-white">
             {getInitials(user?.displayName || user?.email || "A")}
           </div>
         )}

@@ -36,7 +36,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
           <button
             type="submit"
             disabled={loading || !companyName.trim()}
-            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-sm font-semibold text-white dark:text-[var(--text-inverse)] disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap"
+            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-sm font-semibold text-white text-white disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap"
           >
             {loading ? (
               <>
@@ -53,6 +53,27 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
             )}
           </button>
         </form>
+
+        {/* Quick Suggestions / Example Companies to fill space */}
+        <div className="mt-8 pt-4 border-t border-[var(--border-color)]/60">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)] mb-3">
+            Quick suggestions
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {["Apple", "Tesla", "NVIDIA", "Microsoft", "Tata"].map((company) => (
+              <button
+                key={company}
+                type="button"
+                onClick={() => {
+                  onCompanyNameChange({ target: { value: company } });
+                }}
+                className="px-3 py-1.5 rounded-xl border border-[var(--border-color)] bg-[var(--bg-secondary)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-light)] text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--color-accent)] transition-all cursor-pointer shadow-sm"
+              >
+                {company}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {error && (
           <div className="mt-3 flex items-center gap-2 rounded-xl border border-rose-200/60 bg-rose-50/60 dark:border-rose-500/20 dark:bg-rose-500/5 px-4 py-3">

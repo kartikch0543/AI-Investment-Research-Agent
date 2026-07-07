@@ -362,7 +362,7 @@ function MessageBubble({ msg, onCopy, copiedId }) {
       <div className={`flex flex-col gap-1 max-w-[82%] ${isUser ? "items-end" : "items-start"}`}>
         <div className={`rounded-2xl px-4 py-3 text-sm border shadow-sm ${
           isUser
-            ? "bg-[var(--color-accent)] text-white border-transparent rounded-tr-none dark:text-[var(--text-inverse)]"
+            ? "bg-[var(--color-accent)] text-white border-transparent rounded-tr-none text-white"
             : "bg-[var(--bg-secondary)] text-[var(--text-primary)] border-[var(--border-color)] rounded-tl-none"
         }`}>
           {isUser ? (

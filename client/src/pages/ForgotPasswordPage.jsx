@@ -60,7 +60,7 @@ function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="h-10 rounded-lg bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-4 text-xs font-semibold text-white dark:text-[var(--text-inverse)] disabled:cursor-not-allowed disabled:opacity-70 transition-all"
+            className="h-10 rounded-lg bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-4 text-xs font-semibold text-white text-white disabled:cursor-not-allowed disabled:opacity-70 transition-all"
           >
             {submitting ? "Sending..." : "Send reset link"}
           </button>
