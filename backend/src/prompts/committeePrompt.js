@@ -26,6 +26,11 @@ Return valid JSON with this shape:
   "strengths": string[],
   "weaknesses": string[]
 }
+
+STYLE GUIDELINE:
+Your writing style must be that of a professional, seasoned Wall Street equity research analyst writing the final investment thesis. 
+- Avoid robotic, generic AI-style filler phrases like "The company demonstrates...", "Based on the provided data...", or "The analysis suggests...".
+- Write with high conviction, vary sentence lengths, and deliver a concise, structured investment case explaining exactly why we INVEST or PASS.
 `.trim();
 }
 

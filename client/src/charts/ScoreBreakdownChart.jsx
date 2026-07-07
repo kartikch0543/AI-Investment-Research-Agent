@@ -94,25 +94,6 @@ function ScoreBreakdownChart({ scoreBreakdown }) {
               }}
               onMouseLeave={() => setHoveredIdx(null)}
             >
-              <defs>
-                <linearGradient id="finHealthGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity={1} />
-                </linearGradient>
-                <linearGradient id="newsSentGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#3B82F6" stopOpacity={1} />
-                </linearGradient>
-                <linearGradient id="compMoatGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity={1} />
-                </linearGradient>
-                <linearGradient id="riskProfileGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#F59E0B" stopOpacity={1} />
-                </linearGradient>
-              </defs>
-
               <CartesianGrid stroke="var(--border-color)" strokeDasharray="3 3" horizontal={false} opacity={0.4} />
               
               <XAxis
@@ -141,18 +122,16 @@ function ScoreBreakdownChart({ scoreBreakdown }) {
               />
               <Bar 
                 dataKey="value" 
-                radius={[0, 8, 8, 0]} 
-                maxBarSize={16}
+                radius={[0, 4, 4, 0]} 
+                maxBarSize={14}
               >
                 {data.map((entry, index) => {
                   const isHovered = hoveredIdx === index;
-                  const activeOpacity = hoveredIdx === null ? 1 : isHovered ? 1 : 0.45;
+                  const activeOpacity = hoveredIdx === null ? 1 : isHovered ? 1 : 0.6;
                   return (
                     <Cell 
                       key={"cell-" + index} 
-                      fill={`url(#${entry.gradId})`}
-                      stroke={entry.color}
-                      strokeWidth={1.5}
+                      fill={entry.color}
                       opacity={activeOpacity}
                       style={{ transition: "opacity 0.2s ease" }}
                     />

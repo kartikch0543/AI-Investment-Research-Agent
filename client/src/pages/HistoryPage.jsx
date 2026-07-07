@@ -102,7 +102,7 @@ function HistoryPage() {
         </div>
         <Link
           to="/app/dashboard"
-          className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-4 py-2.5 text-sm font-semibold text-white text-white transition-all self-start sm:self-auto shadow-sm"
+          className="inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-4 py-2.5 text-sm font-semibold text-white transition-all self-start sm:self-auto shadow-sm"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />

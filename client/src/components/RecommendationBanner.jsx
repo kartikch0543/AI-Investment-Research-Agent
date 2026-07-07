@@ -126,7 +126,11 @@ function RecommendationBanner({ decision, confidence, overallScore, reasoning, c
         <span className="text-[var(--border-color-strong)]">|</span>
         <span>Last Audit: <strong className="text-[var(--text-primary)]">{lastUpdated}</strong></span>
         <span className="text-[var(--border-color-strong)]">|</span>
-        <span>Decision Status: <strong className={overallScore >= 60 ? "text-emerald-500 font-bold" : "text-rose-500 font-bold"}>{overallScore >= 60 ? "PASS" : "FAIL"}</strong></span>
+        <span>Decision Status: <strong className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide border ml-1 ${
+          overallScore >= 60 
+            ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" 
+            : "bg-rose-500/10 text-rose-500 border-rose-500/20"
+        }`}>{overallScore >= 60 ? "PASS" : "FAIL"}</strong></span>
       </div>
 
       {/* Thesis explanation body */}
