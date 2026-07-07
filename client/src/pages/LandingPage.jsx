@@ -184,9 +184,7 @@ function LandingPage() {
             {/* CTAs */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link to="/signup" className="btn-primary gap-2 text-base px-8 h-12">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
+                
                 Start Research Free
               </Link>
               <a href="#how-it-works" className="btn-ghost text-base px-8 h-12">

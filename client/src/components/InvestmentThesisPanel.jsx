@@ -69,7 +69,7 @@ function InvestmentThesisPanel({ result }) {
         {/* Catalysts & Red Flags */}
         <div className="space-y-4">
           <div className="rounded-xl border border-blue-500/10 bg-blue-500/5 p-4">
-            <h3 className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-2.5">⚡ Core Catalysts</h3>
+            <h3 className="text-xs font-bold text-blue-500 uppercase tracking-wider mb-2.5">Core Catalysts</h3>
             <ul className="space-y-2">
               {thesis.catalysts.map((item, i) => (
                 <li key={i} className="text-xs text-[var(--text-secondary)] leading-relaxed flex items-start gap-2">

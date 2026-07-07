@@ -2,11 +2,11 @@ import GlassPanel from "./ui/GlassPanel";
 
 function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit }) {
   return (
-    <GlassPanel className="relative overflow-hidden h-full flex flex-col justify-between">
+    <GlassPanel className="relative overflow-hidden h-full flex flex-col justify-start">
       {/* Subtle background glow */}
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-accent-light)] to-transparent pointer-events-none" />
 
-      <div className="relative flex-1 flex flex-col justify-between">
+      <div className="relative flex-1 flex flex-col justify-start gap-5">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Input</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
@@ -48,9 +48,6 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
               </>
             ) : (
               <>
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
                 Research
               </>
             )}
