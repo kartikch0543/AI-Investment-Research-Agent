@@ -46,27 +46,29 @@ function DashboardPage() {
     <div className="flex flex-col gap-8">
 
       {/* ── Page header ──────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-2 border-b border-[var(--border-color)]">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-4 border-b border-[var(--border-color)]">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.16,1,0.3,1] }}
         >
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)] mb-1.5">
+          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[var(--color-accent)] mb-2">
             TradeIntel AI · Research Workspace
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[var(--text-primary)] leading-tight">
             {greeting()},{" "}
-            <span className="text-[var(--color-accent)]">{displayName}</span>
+            <span className="bg-gradient-to-r from-[var(--color-accent)] to-emerald-400 bg-clip-text text-transparent">
+              {displayName}
+            </span>
           </h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+          <p className="mt-2 text-sm font-medium text-[var(--text-secondary)]">
             Analyze any public company with 7 specialized AI agents.
           </p>
         </motion.div>
 
         <Link
           to="/app/history"
-          className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] px-4 py-2.5 text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all whitespace-nowrap self-start sm:self-auto shadow-sm"
+          className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-light)] px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-all whitespace-nowrap self-start sm:self-auto shadow-sm"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
