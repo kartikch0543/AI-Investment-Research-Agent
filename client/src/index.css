@@ -48,10 +48,10 @@
   --bg-secondary: #0F172A;
   --bg-surface:   #111827;
   --bg-elevated:  #1E293B;
-  --text-primary:   #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted:     #64748B;
-  --text-inverse:   #0B1220;
+  --text-primary:   #F1F5F9;
+  --text-secondary: #BAC8DB;
+  --text-muted:     #8898AA;
+  --text-inverse:   #FFFFFF;
   --border-color:        #1F2937;
   --border-color-strong: #334155;
   --border-color-glow:   rgba(59, 130, 246, 0.12);
@@ -94,6 +94,19 @@ body {
   background-color: var(--bg-primary);
   transition: background-color 200ms ease, color 200ms ease;
   overflow-x: hidden;
+}
+
+/* Ensure all text in dark mode is legible */
+:root.dark * {
+  color: inherit;
+}
+:root.dark p,
+:root.dark span:not([class*="text-"]),
+:root.dark li,
+:root.dark td,
+:root.dark th,
+:root.dark label {
+  color: inherit;
 }
 
 body::before {

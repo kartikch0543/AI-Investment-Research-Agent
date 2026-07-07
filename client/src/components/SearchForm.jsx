@@ -6,7 +6,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
       {/* Subtle background glow */}
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-accent-light)] to-transparent pointer-events-none" />
 
-      <div className="relative flex-1 flex flex-col justify-start gap-5">
+      <div className="relative flex-1 flex flex-col justify-start gap-4">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-accent)]">Research Input</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
@@ -18,7 +18,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
           </p>
         </div>
 
-        <form className="mt-6 flex flex-col gap-2 sm:flex-row" onSubmit={onSubmit}>
+        <form className="flex flex-col gap-2 sm:flex-row" onSubmit={onSubmit}>
           <div className="relative flex-1">
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -36,7 +36,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
           <button
             type="submit"
             disabled={loading || !companyName.trim()}
-            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-sm font-semibold text-white text-white disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap"
+            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap"
           >
             {loading ? (
               <>
@@ -54,8 +54,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
           </button>
         </form>
 
-        {/* Quick Suggestions / Example Companies to fill space */}
-        <div className="mt-8 pt-4 border-t border-[var(--border-color)]/60">
+        <div className="mt-4 pt-4 border-t border-[var(--border-color)]/60">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--text-muted)] mb-3">
             Quick suggestions
           </p>
