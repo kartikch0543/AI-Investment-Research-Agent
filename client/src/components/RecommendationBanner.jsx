@@ -86,7 +86,6 @@ function RecommendationBanner({ decision, confidence, overallScore, reasoning, c
             FINAL INVESTMENT DECISION
           </span>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--text-primary)] mt-1.5 flex items-center gap-3">
-            <span className="animate-pulse">{config.emoji}</span>
             {config.label}
           </h2>
           <p className="mt-2.5 text-sm text-[var(--text-secondary)] font-medium">

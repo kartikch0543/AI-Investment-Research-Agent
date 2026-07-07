@@ -30,13 +30,13 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
               value={companyName}
               onChange={onCompanyNameChange}
               placeholder="Enter company name (e.g. Apple, Tesla, Infosys)"
-              className="h-12 w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] pl-11 pr-4 text-base text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/15 transition-all"
+              className="h-12 w-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-surface)] pl-11 pr-4 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/15 transition-all"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !companyName.trim()}
-            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-base font-bold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
+            className="h-12 rounded-xl bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] px-6 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2 whitespace-nowrap"
           >
             {loading ? (
               <>
