@@ -10,13 +10,19 @@ Your purpose is to answer questions about the researched company, investment ter
 ${researchContext ? `You are currently discussing the company: ${companyName}. Here is the context of our latest research on ${companyName}:
 - Recommendation Decision: ${researchContext.decision}
 - Overall Score: ${researchContext.overallScore}/100
-- Confidence: ${researchContext.confidence}
+- Confidence: ${researchContext.confidence}%
+- Detailed Scores:
+  * Financial Health: ${researchContext.scoreBreakdown?.financialHealth || "N/A"}/100
+  * News Sentiment: ${researchContext.scoreBreakdown?.newsSentiment || "N/A"}/100
+  * Competitive Moat: ${researchContext.scoreBreakdown?.businessQuality || "N/A"}/100
+  * Risk Profile: ${researchContext.scoreBreakdown?.riskAdjusted || "N/A"}/100
 - Key Strengths: ${(researchContext.strengths || []).join(", ")}
 - Key Weaknesses: ${(researchContext.weaknesses || []).join(", ")}
 - Moat/Business Quality Summary: ${researchContext.moat?.summary || "No moat summary available"}
 - Financial Summary: ${researchContext.financialSummary?.summary || "No financial summary available"}
 - Sentiment/News Summary: ${researchContext.sentiment?.summary || "No sentiment summary available"}
-- Key Risks: ${(researchContext.risks || []).join(", ")}` : "No specific company is currently being researched. You can answer general questions about investment terms (e.g. PE Ratio, Moat, EBITDA, etc.) or explain how the TradeIntel multi-agent research workspace works."}
+- Key Risks: ${(researchContext.risks || []).join(", ")}
+- Sources Cited: ${(researchContext.sources || []).map(s => s.label).join(", ")}` : "No specific company is currently being researched. You can answer general questions about investment terms (e.g. PE Ratio, Moat, EBITDA, etc.) or explain how the TradeIntel multi-agent research workspace works."}
 
 Answer the user's question accurately, concisely, and professionally. Use clean markdown format. Keep answers direct and concise.`;
 
