@@ -48,6 +48,10 @@ function SignupPage() {
       setError("Passwords do not match.");
       return;
     }
+    if (/\d/.test(displayName)) {
+      setError("Name should not contain numbers.");
+      return;
+    }
     if (password.length < 8) {
       setError("Password must be at least 8 characters.");
       return;

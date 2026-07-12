@@ -23,6 +23,14 @@ function ProfilePage() {
 
   async function handleProfileSave(event) {
     event.preventDefault();
+    if (/\d/.test(displayName)) {
+      setError("Name should not contain numbers.");
+      return;
+    }
+    if (contactNumber && /[a-zA-Z]/.test(contactNumber)) {
+      setError("Contact number should not contain alphabets.");
+      return;
+    }
     try {
       setError("");
       setMessage("");

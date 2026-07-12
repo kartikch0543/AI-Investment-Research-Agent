@@ -3,7 +3,12 @@ const { z } = require("zod");
 const userSyncSchema = z.object({
   firebaseUid: z.string().trim().min(1, "Firebase user id is required"),
   email: z.string().trim().email("A valid email is required"),
-  displayName: z.string().trim().optional().or(z.literal("")),
+  displayName: z
+    .string()
+    .trim()
+    .refine(val => !/\d/.test(val || ""), "Name should not contain numbers")
+    .optional()
+    .or(z.literal("")),
   username: z
     .string()
     .trim()
@@ -17,6 +22,7 @@ const userSyncSchema = z.object({
     .trim()
     .min(7, "Contact number must have at least 7 digits")
     .max(20, "Contact number must have at most 20 characters")
+    .refine(val => !/[a-zA-Z]/.test(val || ""), "Contact number should not contain alphabets")
     .optional()
     .or(z.literal("")),
   photoUrl: z.string().trim().url("Photo URL must be valid").optional().or(z.literal("")),
@@ -29,7 +35,11 @@ const userLookupSchema = z.object({
 
 const userProfileUpdateSchema = z.object({
   firebaseUid: z.string().trim().min(1, "Firebase user id is required"),
-  displayName: z.string().trim().min(1, "Display name is required"),
+  displayName: z
+    .string()
+    .trim()
+    .min(1, "Display name is required")
+    .refine(val => !/\d/.test(val), "Name should not contain numbers"),
   username: z
     .string()
     .trim()
@@ -40,7 +50,8 @@ const userProfileUpdateSchema = z.object({
     .string()
     .trim()
     .min(7, "Contact number must have at least 7 digits")
-    .max(20, "Contact number must have at most 20 characters"),
+    .max(20, "Contact number must have at most 20 characters")
+    .refine(val => !/[a-zA-Z]/.test(val), "Contact number should not contain alphabets"),
   photoUrl: z.string().trim().url("Photo URL must be valid").optional().or(z.literal(""))
 });
 
