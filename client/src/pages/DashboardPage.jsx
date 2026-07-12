@@ -41,16 +41,18 @@ function DashboardPage() {
   };
 
   const displayName = user?.displayName?.split(" ")[0] || user?.email?.split("@")[0] || "Investor";
+  const capitalizedDisplayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
 
   return (
     <div className="flex flex-col gap-8">
 
       {/* ── Page header ──────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-4 border-b border-[var(--border-color)]">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-6 border-b border-[var(--border-color)]">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.16,1,0.3,1] }}
+          className="flex-1"
         >
           <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[var(--color-accent)] mb-2">
             TradeIntel AI · Research Workspace
@@ -58,17 +60,37 @@ function DashboardPage() {
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[var(--text-primary)] leading-tight">
             {greeting()},{" "}
             <span className="text-[var(--color-accent)]">
-              {displayName}
+              {capitalizedDisplayName}
             </span>
           </h1>
           <p className="mt-2 text-sm font-medium text-[var(--text-secondary)]">
-            Analyze any public company with 7 specialized AI agents.
+            Ready to analyze your next investment?
           </p>
         </motion.div>
 
+        {/* Today's Market Indexes */}
+        <div className="flex items-center gap-4 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-2xl px-5 py-3 shadow-sm shrink-0">
+          <div className="flex flex-col pr-4 border-r border-[var(--border-color)]">
+            <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Today's Market</span>
+            <span className="text-[10px] font-bold text-emerald-500 mt-0.5 flex items-center gap-1 animate-pulse">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> LIVE
+            </span>
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase">NIFTY 50</span>
+              <span className="text-xs font-bold text-emerald-500 font-mono mt-0.5">+0.84%</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold text-[var(--text-secondary)] uppercase">SENSEX</span>
+              <span className="text-xs font-bold text-emerald-500 font-mono mt-0.5">+1.02%</span>
+            </div>
+          </div>
+        </div>
+
         <Link
           to="/app/history"
-          className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-light)] px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-all whitespace-nowrap self-start sm:self-auto shadow-sm"
+          className="inline-flex items-center gap-2 rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-light)] px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-all whitespace-nowrap shadow-sm shrink-0 self-start md:self-auto"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>

@@ -140,7 +140,7 @@ function SearchForm({ companyName, loading, error, onCompanyNameChange, onSubmit
           <button
             type="submit"
             disabled={loading || !companyName.trim()}
-            className="h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2.5 whitespace-nowrap px-7 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 border border-blue-500/20"
+            className="h-12 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white font-bold text-sm uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2.5 whitespace-nowrap px-7 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 border border-emerald-500/20"
           >
             {loading ? (
               <>
